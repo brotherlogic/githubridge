@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package githubridge;
+
+option go_package = "github.com/brotherlogic/githubridge/proto";
+
+message AddIssueRequest {
+    string job = 1;
+
+    string title = 2;
+    string body = 3;
+}
+
+message AddIssueResponse {
+    int32 issue_id = 1;
+}
+
+service GithubBrideg {
+    rpc AddIssue(AddIssueRequest) returns (AddIssueResponse) {};
+  }
