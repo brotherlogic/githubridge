@@ -49,7 +49,7 @@ func main() {
 
 	token := os.Getenv("GITHUBRIDGE_TOKEN")
 	if token == "" {
-		log.Fatalf("You must specify the token")
+		log.Fatalf("you must specify the token")
 	}
 
 	ts := oauth2.StaticTokenSource(
