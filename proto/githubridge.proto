@@ -15,6 +15,6 @@ message AddIssueResponse {
     int32 issue_id = 1;
 }
 
-service GithubBrideg {
+service GithubBridge {
     rpc AddIssue(AddIssueRequest) returns (AddIssueResponse) {};
   }

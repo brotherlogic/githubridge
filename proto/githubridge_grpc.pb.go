@@ -18,84 +18,84 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GithubBridegClient is the client API for GithubBrideg service.
+// GithubBridgeClient is the client API for GithubBridge service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GithubBridegClient interface {
+type GithubBridgeClient interface {
 	AddIssue(ctx context.Context, in *AddIssueRequest, opts ...grpc.CallOption) (*AddIssueResponse, error)
 }
 
-type githubBridegClient struct {
+type githubBridgeClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGithubBridegClient(cc grpc.ClientConnInterface) GithubBridegClient {
-	return &githubBridegClient{cc}
+func NewGithubBridgeClient(cc grpc.ClientConnInterface) GithubBridgeClient {
+	return &githubBridgeClient{cc}
 }
 
-func (c *githubBridegClient) AddIssue(ctx context.Context, in *AddIssueRequest, opts ...grpc.CallOption) (*AddIssueResponse, error) {
+func (c *githubBridgeClient) AddIssue(ctx context.Context, in *AddIssueRequest, opts ...grpc.CallOption) (*AddIssueResponse, error) {
 	out := new(AddIssueResponse)
-	err := c.cc.Invoke(ctx, "/githubridge.GithubBrideg/AddIssue", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/githubridge.GithubBridge/AddIssue", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GithubBridegServer is the server API for GithubBrideg service.
-// All implementations should embed UnimplementedGithubBridegServer
+// GithubBridgeServer is the server API for GithubBridge service.
+// All implementations should embed UnimplementedGithubBridgeServer
 // for forward compatibility
-type GithubBridegServer interface {
+type GithubBridgeServer interface {
 	AddIssue(context.Context, *AddIssueRequest) (*AddIssueResponse, error)
 }
 
-// UnimplementedGithubBridegServer should be embedded to have forward compatible implementations.
-type UnimplementedGithubBridegServer struct {
+// UnimplementedGithubBridgeServer should be embedded to have forward compatible implementations.
+type UnimplementedGithubBridgeServer struct {
 }
 
-func (UnimplementedGithubBridegServer) AddIssue(context.Context, *AddIssueRequest) (*AddIssueResponse, error) {
+func (UnimplementedGithubBridgeServer) AddIssue(context.Context, *AddIssueRequest) (*AddIssueResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddIssue not implemented")
 }
 
-// UnsafeGithubBridegServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GithubBridegServer will
+// UnsafeGithubBridgeServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GithubBridgeServer will
 // result in compilation errors.
-type UnsafeGithubBridegServer interface {
-	mustEmbedUnimplementedGithubBridegServer()
+type UnsafeGithubBridgeServer interface {
+	mustEmbedUnimplementedGithubBridgeServer()
 }
 
-func RegisterGithubBridegServer(s grpc.ServiceRegistrar, srv GithubBridegServer) {
-	s.RegisterService(&GithubBrideg_ServiceDesc, srv)
+func RegisterGithubBridgeServer(s grpc.ServiceRegistrar, srv GithubBridgeServer) {
+	s.RegisterService(&GithubBridge_ServiceDesc, srv)
 }
 
-func _GithubBrideg_AddIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GithubBridge_AddIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddIssueRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GithubBridegServer).AddIssue(ctx, in)
+		return srv.(GithubBridgeServer).AddIssue(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/githubridge.GithubBrideg/AddIssue",
+		FullMethod: "/githubridge.GithubBridge/AddIssue",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GithubBridegServer).AddIssue(ctx, req.(*AddIssueRequest))
+		return srv.(GithubBridgeServer).AddIssue(ctx, req.(*AddIssueRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GithubBrideg_ServiceDesc is the grpc.ServiceDesc for GithubBrideg service.
+// GithubBridge_ServiceDesc is the grpc.ServiceDesc for GithubBridge service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GithubBrideg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "githubridge.GithubBrideg",
-	HandlerType: (*GithubBridegServer)(nil),
+var GithubBridge_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "githubridge.GithubBridge",
+	HandlerType: (*GithubBridgeServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "AddIssue",
-			Handler:    _GithubBrideg_AddIssue_Handler,
+			Handler:    _GithubBridge_AddIssue_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
