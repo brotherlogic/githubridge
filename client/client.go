@@ -9,11 +9,14 @@ import (
 )
 
 type GithubridgeClient interface {
-	AddIssue(ctx context.Context, req *pb.AddIssueRequest) (*pb.AddIssueResponse, error)
+	CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error)
+	CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error)
+	CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error)
+	GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error)
 }
 
 type rClient struct {
-	gClient pb.GithubBridgeClient
+	gClient pb.GithubridgeServiceClient
 }
 
 func GetClient() (GithubridgeClient, error) {
@@ -21,9 +24,19 @@ func GetClient() (GithubridgeClient, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &rClient{gClient: pb.NewGithubBridgeClient(conn)}, nil
+	return &rClient{gClient: pb.NewGithubridgeServiceClient(conn)}, nil
 }
 
-func (c *rClient) AddIssue(ctx context.Context, req *pb.AddIssueRequest) (*pb.AddIssueResponse, error) {
-	return c.gClient.AddIssue(ctx, req)
+func (c *rClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
+	return c.gClient.CreateIssue(ctx, req)
+}
+
+func (c *rClient) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
+	return c.gClient.CloseIssue(ctx, req)
+}
+func (c *rClient) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error) {
+	return c.gClient.CommentOnIssue(ctx, req)
+}
+func (c *rClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
+	return c.gClient.GetIssue(ctx, req)
 }
