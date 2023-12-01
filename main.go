@@ -51,6 +51,7 @@ func main() {
 	}
 	gs := grpc.NewServer()
 	pb.RegisterGithubridgeServiceServer(gs, s)
+	log.Printf("Servin on port :%d", *port)
 	if err := gs.Serve(lis); err != nil {
 		log.Fatalf("gramophile is unable to serve grpc: %v", err)
 	}
