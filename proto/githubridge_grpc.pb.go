@@ -18,84 +18,192 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GithubBridegClient is the client API for GithubBrideg service.
+// GithubridgeServiceClient is the client API for GithubridgeService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GithubBridegClient interface {
-	AddIssue(ctx context.Context, in *AddIssueRequest, opts ...grpc.CallOption) (*AddIssueResponse, error)
+type GithubridgeServiceClient interface {
+	CreateIssue(ctx context.Context, in *CreateIssueRequest, opts ...grpc.CallOption) (*CreateIssueResponse, error)
+	GetIssue(ctx context.Context, in *GetIssueRequest, opts ...grpc.CallOption) (*GetIssueResponse, error)
+	CloseIssue(ctx context.Context, in *CloseIssueRequest, opts ...grpc.CallOption) (*CloseIssueResponse, error)
+	CommentOnIssue(ctx context.Context, in *CommentOnIssueRequest, opts ...grpc.CallOption) (*CommentOnIssueResponse, error)
 }
 
-type githubBridegClient struct {
+type githubridgeServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGithubBridegClient(cc grpc.ClientConnInterface) GithubBridegClient {
-	return &githubBridegClient{cc}
+func NewGithubridgeServiceClient(cc grpc.ClientConnInterface) GithubridgeServiceClient {
+	return &githubridgeServiceClient{cc}
 }
 
-func (c *githubBridegClient) AddIssue(ctx context.Context, in *AddIssueRequest, opts ...grpc.CallOption) (*AddIssueResponse, error) {
-	out := new(AddIssueResponse)
-	err := c.cc.Invoke(ctx, "/githubridge.GithubBrideg/AddIssue", in, out, opts...)
+func (c *githubridgeServiceClient) CreateIssue(ctx context.Context, in *CreateIssueRequest, opts ...grpc.CallOption) (*CreateIssueResponse, error) {
+	out := new(CreateIssueResponse)
+	err := c.cc.Invoke(ctx, "/githubridge.GithubridgeService/CreateIssue", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GithubBridegServer is the server API for GithubBrideg service.
-// All implementations should embed UnimplementedGithubBridegServer
+func (c *githubridgeServiceClient) GetIssue(ctx context.Context, in *GetIssueRequest, opts ...grpc.CallOption) (*GetIssueResponse, error) {
+	out := new(GetIssueResponse)
+	err := c.cc.Invoke(ctx, "/githubridge.GithubridgeService/GetIssue", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *githubridgeServiceClient) CloseIssue(ctx context.Context, in *CloseIssueRequest, opts ...grpc.CallOption) (*CloseIssueResponse, error) {
+	out := new(CloseIssueResponse)
+	err := c.cc.Invoke(ctx, "/githubridge.GithubridgeService/CloseIssue", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *githubridgeServiceClient) CommentOnIssue(ctx context.Context, in *CommentOnIssueRequest, opts ...grpc.CallOption) (*CommentOnIssueResponse, error) {
+	out := new(CommentOnIssueResponse)
+	err := c.cc.Invoke(ctx, "/githubridge.GithubridgeService/CommentOnIssue", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GithubridgeServiceServer is the server API for GithubridgeService service.
+// All implementations should embed UnimplementedGithubridgeServiceServer
 // for forward compatibility
-type GithubBridegServer interface {
-	AddIssue(context.Context, *AddIssueRequest) (*AddIssueResponse, error)
+type GithubridgeServiceServer interface {
+	CreateIssue(context.Context, *CreateIssueRequest) (*CreateIssueResponse, error)
+	GetIssue(context.Context, *GetIssueRequest) (*GetIssueResponse, error)
+	CloseIssue(context.Context, *CloseIssueRequest) (*CloseIssueResponse, error)
+	CommentOnIssue(context.Context, *CommentOnIssueRequest) (*CommentOnIssueResponse, error)
 }
 
-// UnimplementedGithubBridegServer should be embedded to have forward compatible implementations.
-type UnimplementedGithubBridegServer struct {
+// UnimplementedGithubridgeServiceServer should be embedded to have forward compatible implementations.
+type UnimplementedGithubridgeServiceServer struct {
 }
 
-func (UnimplementedGithubBridegServer) AddIssue(context.Context, *AddIssueRequest) (*AddIssueResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddIssue not implemented")
+func (UnimplementedGithubridgeServiceServer) CreateIssue(context.Context, *CreateIssueRequest) (*CreateIssueResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateIssue not implemented")
+}
+func (UnimplementedGithubridgeServiceServer) GetIssue(context.Context, *GetIssueRequest) (*GetIssueResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIssue not implemented")
+}
+func (UnimplementedGithubridgeServiceServer) CloseIssue(context.Context, *CloseIssueRequest) (*CloseIssueResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CloseIssue not implemented")
+}
+func (UnimplementedGithubridgeServiceServer) CommentOnIssue(context.Context, *CommentOnIssueRequest) (*CommentOnIssueResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommentOnIssue not implemented")
 }
 
-// UnsafeGithubBridegServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GithubBridegServer will
+// UnsafeGithubridgeServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GithubridgeServiceServer will
 // result in compilation errors.
-type UnsafeGithubBridegServer interface {
-	mustEmbedUnimplementedGithubBridegServer()
+type UnsafeGithubridgeServiceServer interface {
+	mustEmbedUnimplementedGithubridgeServiceServer()
 }
 
-func RegisterGithubBridegServer(s grpc.ServiceRegistrar, srv GithubBridegServer) {
-	s.RegisterService(&GithubBrideg_ServiceDesc, srv)
+func RegisterGithubridgeServiceServer(s grpc.ServiceRegistrar, srv GithubridgeServiceServer) {
+	s.RegisterService(&GithubridgeService_ServiceDesc, srv)
 }
 
-func _GithubBrideg_AddIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddIssueRequest)
+func _GithubridgeService_CreateIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateIssueRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GithubBridegServer).AddIssue(ctx, in)
+		return srv.(GithubridgeServiceServer).CreateIssue(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/githubridge.GithubBrideg/AddIssue",
+		FullMethod: "/githubridge.GithubridgeService/CreateIssue",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GithubBridegServer).AddIssue(ctx, req.(*AddIssueRequest))
+		return srv.(GithubridgeServiceServer).CreateIssue(ctx, req.(*CreateIssueRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GithubBrideg_ServiceDesc is the grpc.ServiceDesc for GithubBrideg service.
+func _GithubridgeService_GetIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIssueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GithubridgeServiceServer).GetIssue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/githubridge.GithubridgeService/GetIssue",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GithubridgeServiceServer).GetIssue(ctx, req.(*GetIssueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GithubridgeService_CloseIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CloseIssueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GithubridgeServiceServer).CloseIssue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/githubridge.GithubridgeService/CloseIssue",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GithubridgeServiceServer).CloseIssue(ctx, req.(*CloseIssueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GithubridgeService_CommentOnIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentOnIssueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GithubridgeServiceServer).CommentOnIssue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/githubridge.GithubridgeService/CommentOnIssue",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GithubridgeServiceServer).CommentOnIssue(ctx, req.(*CommentOnIssueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// GithubridgeService_ServiceDesc is the grpc.ServiceDesc for GithubridgeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GithubBrideg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "githubridge.GithubBrideg",
-	HandlerType: (*GithubBridegServer)(nil),
+var GithubridgeService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "githubridge.GithubridgeService",
+	HandlerType: (*GithubridgeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AddIssue",
-			Handler:    _GithubBrideg_AddIssue_Handler,
+			MethodName: "CreateIssue",
+			Handler:    _GithubridgeService_CreateIssue_Handler,
+		},
+		{
+			MethodName: "GetIssue",
+			Handler:    _GithubridgeService_GetIssue_Handler,
+		},
+		{
+			MethodName: "CloseIssue",
+			Handler:    _GithubridgeService_CloseIssue_Handler,
+		},
+		{
+			MethodName: "CommentOnIssue",
+			Handler:    _GithubridgeService_CommentOnIssue_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

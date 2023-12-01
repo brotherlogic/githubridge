@@ -1,36 +1,42 @@
-package main
+package githubridgeclient
 
 import (
 	"context"
-	"fmt"
-	"log"
-	"os"
-	"time"
-
-	pb "github.com/brotherlogic/githubridge/proto"
 
 	"google.golang.org/grpc"
+
+	pb "github.com/brotherlogic/githubridge/proto"
 )
 
-func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
+type GithubridgeClient interface {
+	CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error)
+	CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error)
+	CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error)
+	GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error)
+}
 
-	conn, err := grpc.Dial(os.Args[1], grpc.WithInsecure())
+type rClient struct {
+	gClient pb.GithubridgeServiceClient
+}
+
+func GetClient() (GithubridgeClient, error) {
+	conn, err := grpc.Dial("githubridge.githubridge:8080", grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Bad dial: %v", err)
+		return nil, err
 	}
+	return &rClient{gClient: pb.NewGithubridgeServiceClient(conn)}, nil
+}
 
-	client := pb.NewGithubBridegClient(conn)
+func (c *rClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
+	return c.gClient.CreateIssue(ctx, req)
+}
 
-	switch os.Args[2] {
-	case "add":
-		res, err := client.AddIssue(ctx, &pb.AddIssueRequest{
-			Title: "Testing",
-			Job:   "githubridge",
-		})
-		fmt.Printf("%v -> %v\n", res, err)
-	default:
-		fmt.Printf("Unknown command: %v\n", os.Args[1])
-	}
+func (c *rClient) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
+	return c.gClient.CloseIssue(ctx, req)
+}
+func (c *rClient) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error) {
+	return c.gClient.CommentOnIssue(ctx, req)
+}
+func (c *rClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
+	return c.gClient.GetIssue(ctx, req)
 }

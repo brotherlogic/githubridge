@@ -1,0 +1,79 @@
+package server
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/google/go-github/v50/github"
+	"google.golang.org/protobuf/proto"
+
+	pb "github.com/brotherlogic/githubridge/proto"
+)
+
+type Server struct {
+	client *github.Client
+}
+
+func NewServer(client *github.Client) *Server {
+	return &Server{client: client}
+}
+
+func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
+	issue, resp, err := s.client.Issues.Create(ctx, req.GetUser(), req.GetRepo(), &github.IssueRequest{
+		Title: proto.String(req.GetTitle()),
+		Body:  proto.String(req.GetBody()),
+	})
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 201 {
+		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
+	}
+
+	return &pb.CreateIssueResponse{IssueId: (issue.GetID())}, nil
+}
+
+func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
+	_, resp, err := s.client.Issues.Edit(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueRequest{
+		State: proto.String("closed"),
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
+	}
+
+	return &pb.CloseIssueResponse{}, nil
+}
+
+func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error) {
+	_, resp, err := s.client.Issues.CreateComment(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueComment{
+		Body: proto.String(req.GetComment()),
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
+	}
+
+	return &pb.CommentOnIssueResponse{}, nil
+}
+
+func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
+	issue, resp, err := s.client.Issues.Get(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()))
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
+	}
+	return &pb.GetIssueResponse{
+		State:    issue.GetState(),
+		Comments: int32(issue.GetComments()),
+	}, nil
+}
