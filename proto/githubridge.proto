@@ -4,11 +4,6 @@ package githubridge;
 
 option go_package = "github.com/brotherlogic/githubridge/proto";
 
-message Issue {
-    int32 id = 1;
-    string title = 2;
-    string body = 3;
-}
 
 message CreateIssueRequest {
     string user = 1;
@@ -18,7 +13,7 @@ message CreateIssueRequest {
 }
 
 message CreateIssueResponse {
-    Issue issue = 1;
+    int64 issue_id = 1;
 }
 
 message GetIssueRequest {
@@ -27,7 +22,10 @@ message GetIssueRequest {
     int32 id = 3;
 }
 
-message GetIssueResponse {}
+message GetIssueResponse {
+    string state = 1;
+    int32 comments = 2;
+}
 
 message CloseIssueRequest {
     string user = 1;
@@ -44,9 +42,11 @@ message CommentOnIssueRequest {
     string comment = 4;
 }
 
-service Githubridge {
+message CommentOnIssueResponse{}
+
+service GithubridgeService {
     rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
     rpc GetIssue(GetIssueRequest) returns (GetIssueResponse);
     rpc CloseIssue(CloseIssueRequest) returns (CloseIssueResponse);
-    rpc CommentOnIssue(CommentOnIssueRequest) returns (CommentOnIssueResponse)
+    rpc CommentOnIssue(CommentOnIssueRequest) returns (CommentOnIssueResponse);
 }
