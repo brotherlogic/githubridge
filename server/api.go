@@ -30,7 +30,7 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
 
-	return &pb.CreateIssueResponse{IssueId: (issue.GetID())}, nil
+	return &pb.CreateIssueResponse{IssueId: (int64(issue.GetNumber()))}, nil
 }
 
 func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
