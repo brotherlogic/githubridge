@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/google/go-github/v50/github"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/brotherlogic/githubridge/proto"
@@ -66,9 +68,14 @@ func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueReque
 func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
 	issue, resp, err := s.client.Issues.Get(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()))
 
+	if resp != nil && resp.StatusCode == 404 {
+		return nil, status.Errorf(codes.NotFound, "Cannot find %v/%v/%v", req.User, req.GetRepo(), req.GetId())
+	}
+
 	if err != nil {
 		return nil, err
 	}
+
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
