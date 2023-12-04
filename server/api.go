@@ -58,8 +58,8 @@ func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueReque
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
+	if resp.StatusCode != 201 {
+		return nil, fmt.Errorf("bad response code for comment: %v", resp.StatusCode)
 	}
 
 	return &pb.CommentOnIssueResponse{}, nil
