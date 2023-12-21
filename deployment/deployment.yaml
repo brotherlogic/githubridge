@@ -56,7 +56,7 @@ spec:
     spec:
       containers:
       - name: githubridge
-        image: registry.brotherlogic-backend.com/brotherlogic/githubridge:0.1724.0 # {"$imagepolicy": "flux-system:githubridge"}
+        image: registry.brotherlogic-backend.com/brotherlogic/githubridge:0.1725.0 # {"$imagepolicy": "flux-system:githubridge"}
         ports:
         - containerPort: 8080
         env:
