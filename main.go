@@ -37,7 +37,7 @@ func main() {
 	)
 	tc := oauth2.NewClient(context.Background(), ts)
 
-	s := server.NewServer(github.NewClient(tc))
+	s := server.NewServer(github.NewClient(tc), *owner)
 
 	http.Handle("/metrics", promhttp.Handler())
 	go func() {
@@ -51,7 +51,7 @@ func main() {
 	}
 	gs := grpc.NewServer()
 	pb.RegisterGithubridgeServiceServer(gs, s)
-	log.Printf("Servin on port :%d", *port)
+	log.Printf("Serving on port :%d", *port)
 	if err := gs.Serve(lis); err != nil {
 		log.Fatalf("gramophile is unable to serve grpc: %v", err)
 	}

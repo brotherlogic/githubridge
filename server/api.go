@@ -14,10 +14,16 @@ import (
 
 type Server struct {
 	client *github.Client
+	repos  []string
+	user   string
 }
 
-func NewServer(client *github.Client) *Server {
-	return &Server{client: client}
+func NewServer(client *github.Client, user string) *Server {
+	s := &Server{client: client, user: user}
+	go func() {
+		s.startup(context.Background())
+	}()
+	return s
 }
 
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {

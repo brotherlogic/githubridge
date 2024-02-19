@@ -55,15 +55,17 @@ spec:
         app: githubridge
     spec:
       containers:
-      - name: githubridge
-        image: registry.brotherlogic-backend.com/brotherlogic/githubridge:0.859.0 # {"$imagepolicy": "flux-system:githubridge"}
-        ports:
-        - containerPort: 8080
-        env:
-        - name: GITHUBRIDGE_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: ghb
-              key: ghb_token
+        - name: githubridge
+          image: registry.brotherlogic-backend.com/brotherlogic/githubridge:0.859.0 # {"$imagepolicy": "flux-system:githubridge"}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GITHUBRIDGE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ghb
+                  key: ghb_token
+            - name: GITHUBRIDGE_USER
+              value: "brotherlogic"
       imagePullSecrets:
-      - name: regcred
+        - name: regcred
