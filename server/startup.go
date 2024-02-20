@@ -65,7 +65,7 @@ func (s *Server) startup(ctx context.Context) error {
 		if !found {
 			log.Printf("Add to %v", repo)
 			a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, &github.Hook{
-				URL: proto.String(callback),
+				PingURL: proto.String(callback),
 			})
 			log.Printf("HERE: %v, %v, %v", a, b, c)
 		}
