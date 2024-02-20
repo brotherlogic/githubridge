@@ -20,6 +20,7 @@ func (s *Server) startup(ctx context.Context) error {
 	cpage := 1
 	lpage := 1
 
+	s.repos = []string{}
 	for cpage <= lpage {
 		// Read all the repos
 		repos, resp, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{
@@ -30,8 +31,6 @@ func (s *Server) startup(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-
-		s.repos = []string{}
 		for _, repo := range repos {
 			s.repos = append(s.repos, repo.GetName())
 		}
