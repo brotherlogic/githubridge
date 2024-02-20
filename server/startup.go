@@ -75,7 +75,7 @@ func (s *Server) startup(ctx context.Context) error {
 	}
 
 	// Install the webhook
-	http.HandleFunc("/githubwebhook", s.githubwebhook)
+	http.HandleFunc("/", s.githubwebhook)
 	err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
 	if err != nil {
 		panic(err)
