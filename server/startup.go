@@ -7,6 +7,7 @@ import (
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"google.golang.org/protobuf/proto"
 )
 
 var (
@@ -61,6 +62,9 @@ func (s *Server) startup(ctx context.Context) error {
 
 		if !found {
 			log.Printf("Add to %v", repo)
+			s.client.Repositories.CreateHook(ctx, s.user, repo, &github.Hook{
+				URL: proto.String(callback),
+			})
 		}
 	}
 
