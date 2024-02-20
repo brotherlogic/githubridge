@@ -4,6 +4,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/google/go-github/v50/github"
 )
 
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
@@ -13,5 +15,16 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("Received webhook: %v", string(body))
+	event, err := github.ParseWebHook(github.WebHookType(r), body)
+	if err != nil {
+		log.Printf("Bad stuff")
+	}
+	switch event := event.(type) {
+	case *github.IssueEvent:
+		repo := event.Issue.Repository.Name
+		action := event.Event
+		log.Printf("%v -> %v", repo, action)
+	default:
+		log.Printf("Unable to process %v", event)
+	}
 }
