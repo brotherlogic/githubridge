@@ -52,10 +52,10 @@ func (s *Server) startup(ctx context.Context) error {
 
 		found := false
 		for _, h := range hooks {
-			if h.GetURL() == callback {
+			if h.GetPingURL() == callback {
 				found = true
 			} else {
-				log.Printf("Found %v", h.GetURL())
+				log.Printf("Found %v -> %v (%+v)", h.GetURL(), h.GetPingURL(), h)
 			}
 		}
 
