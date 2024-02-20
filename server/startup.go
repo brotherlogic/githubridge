@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
@@ -25,6 +26,7 @@ func (s *Server) startup(ctx context.Context) error {
 			ListOptions: github.ListOptions{Page: cpage},
 		})
 		lpage = resp.LastPage
+		log.Printf("READ: %v", resp)
 		if err != nil {
 			return err
 		}
