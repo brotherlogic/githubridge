@@ -11,7 +11,7 @@ import (
 var (
 	trackedRepos = promauto.NewGauge(prometheus.GaugeOpts{
 		Name: "githubridge_tracked_repos",
-		Help: "The size of the user list",
+		Help: "The number of repos being tracked",
 	})
 )
 
