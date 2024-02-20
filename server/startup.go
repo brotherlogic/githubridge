@@ -65,12 +65,9 @@ func (s *Server) startup(ctx context.Context) error {
 		if !found {
 			log.Printf("Add to %v", repo)
 			hook := &github.Hook{
-				PingURL: proto.String(callback),
-				URL:     proto.String(callback),
-				TestURL: proto.String(callback),
-				Name:    proto.String("KubeHookv1"),
-				Events:  []string{"issues"},
-				Type:    proto.String("json"),
+				Active: proto.Bool(true),
+				Events: []string{"issues"},
+				Config: map[string]interface{}{"url": callback},
 			}
 			a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, hook)
 			log.Printf("HERE: %v, %v, %v from %v", a, b, c, hook)
