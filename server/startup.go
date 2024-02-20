@@ -16,15 +16,26 @@ var (
 )
 
 func (s *Server) startup(ctx context.Context) error {
-	// Read all the repos
-	repos, _, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{})
-	if err != nil {
-		return err
-	}
+	cpage := 1
+	lpage := 1
 
-	s.repos = []string{}
-	for _, repo := range repos {
-		s.repos = append(s.repos, repo.GetName())
+	for cpage <= lpage {
+		// Read all the repos
+		repos, resp, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{
+			ListOptions: github.ListOptions{Page: cpage},
+		})
+		lpage = resp.LastPage
+		if err != nil {
+			return err
+		}
+
+		s.repos = []string{}
+		for _, repo := range repos {
+			s.repos = append(s.repos, repo.GetName())
+		}
+
+		cpage++
+
 	}
 
 	trackedRepos.Set(float64(len(s.repos)))
