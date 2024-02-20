@@ -26,7 +26,7 @@ func (s *Server) startup(ctx context.Context) error {
 			ListOptions: github.ListOptions{Page: cpage},
 		})
 		lpage = resp.LastPage
-		log.Printf("READ: %v", resp)
+		log.Printf("READ: %v / %v", cpage, resp.LastPage)
 		if err != nil {
 			return err
 		}
