@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
@@ -66,6 +68,13 @@ func (s *Server) startup(ctx context.Context) error {
 				URL: proto.String(callback),
 			})
 		}
+	}
+
+	// Install the webhook
+	http.HandleFunc("/githubwebhook", s.githubwebhook)
+	err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
+	if err != nil {
+		panic(err)
 	}
 
 	return nil

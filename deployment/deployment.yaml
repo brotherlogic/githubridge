@@ -17,6 +17,9 @@ spec:
     - name: metrics
       port: 8081
       targetPort: 8081
+    - name: webhook
+      port: 80
+      targetPort: 80
   selector:
     app: githubridge
 ---
