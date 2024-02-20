@@ -1,7 +1,6 @@
 package server
 
 import (
-	"io"
 	"log"
 	"net/http"
 
@@ -9,13 +8,9 @@ import (
 )
 
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		log.Printf("Unable to parse body: %v", err)
-		return
-	}
+	payload, err := github.ValidatePayload(r, nil)
 
-	event, err := github.ParseWebHook(github.WebHookType(r), body)
+	event, err := github.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
 		log.Printf("Bad stuff: %v", err)
 	}
