@@ -14,6 +14,8 @@ var (
 		Name: "githubridge_tracked_repos",
 		Help: "The number of repos being tracked",
 	})
+
+	callback = "http://ghwebhook.brotherlogic-backend.com/"
 )
 
 func (s *Server) startup(ctx context.Context) error {
@@ -40,6 +42,27 @@ func (s *Server) startup(ctx context.Context) error {
 	}
 
 	trackedRepos.Set(float64(len(s.repos)))
+
+	// Ensure we have a callback on each repo
+	for _, repo := range s.repos {
+		hooks, _, err := s.client.Repositories.ListHooks(ctx, s.user, repo, &github.ListOptions{})
+		if err != nil {
+			return err
+		}
+
+		found := false
+		for _, h := range hooks {
+			if h.GetURL() == callback {
+				found = true
+			} else {
+				log.Printf("Found %v", h.GetURL())
+			}
+		}
+
+		if !found {
+			log.Printf("Add to %v", repo)
+		}
+	}
 
 	return nil
 }
