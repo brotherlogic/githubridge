@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/google/go-github/v50/github"
 	"google.golang.org/grpc/codes"
@@ -21,12 +22,11 @@ type Server struct {
 
 func NewServer(client *github.Client, user string) *Server {
 	s := &Server{client: client, user: user}
-	go func() {
-		err := s.startup(context.Background())
-		if err != nil {
-			log.Printf("Failed startup: %v", err)
-		}
-	}()
+	err := s.startup(context.Background())
+	if err != nil {
+		log.Printf("Failed startup: %v", err)
+		os.Exit(1)
+	}
 	return s
 }
 
