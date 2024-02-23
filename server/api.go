@@ -21,7 +21,6 @@ type Server struct {
 	issues []*pb.GithubIssue
 }
 
-
 func NewServer(client *github.Client, user string) *Server {
 	s := &Server{client: client, user: user}
 	err := s.startup(context.Background())
@@ -48,6 +47,7 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 }
 
 func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
+
 	_, resp, err := s.client.Issues.Edit(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueRequest{
 		State: proto.String("closed"),
 	})
@@ -58,6 +58,15 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
+
+	// Delete the issue from the cache
+	var nissue []*pb.GithubIssue
+	for _, issue := range s.issues {
+		if issue.GetUser() != req.GetUser() && issue.GetRepo() != req.GetRepo() && issue.GetId() != int64(req.GetId()) {
+			nissue = append(nissue, issue)
+		}
+	}
+	s.issues = nissue
 
 	return &pb.CloseIssueResponse{}, nil
 }

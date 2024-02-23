@@ -36,7 +36,7 @@ message GetIssueResponse {
 message CloseIssueRequest {
     string user = 1;
     string repo = 2;
-    int32 id = 3;
+    int64 id = 3;
 }
 
 message CloseIssueResponse {}
