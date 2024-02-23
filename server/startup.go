@@ -51,7 +51,10 @@ func (s *Server) loadIssues(ctx context.Context, repo string) error {
 			return err
 		}
 		for _, issue := range issues {
-			s.issues = append(s.issues, convertIssue(issue))
+			nissue := convertIssue(issue)
+			log.Printf("FOUND ISSUE: %v", nissue)
+			s.issues = append(s.issues, nissue)
+
 		}
 
 		cpage++
