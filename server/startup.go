@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	pb "github.com/brotherlogic/githubridge/proto"
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -18,14 +19,53 @@ var (
 		Help: "The number of repos being tracked",
 	})
 
+	trackedIssues = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "githubridge_tracked_issues",
+		Help: "The number of issues being tracked",
+	})
+
 	callback = "http://ghwebhook.brotherlogic-backend.com/"
 )
+
+func convertIssue(issue *github.Issue) *pb.GithubIssue {
+	return &pb.GithubIssue{
+		Id:    issue.GetID(),
+		Repo:  issue.GetRepository().GetName(),
+		User:  issue.GetRepository().GetOwner().GetName(),
+		Title: issue.GetTitle(),
+	}
+}
+
+func (s *Server) loadIssues(ctx context.Context, repo string) error {
+	cpage := 1
+	lpage := 1
+
+	for cpage <= lpage {
+		// Read all the repos
+		issues, resp, err := s.client.Issues.ListByRepo(ctx, s.user, repo, &github.IssueListByRepoOptions{
+			ListOptions: github.ListOptions{Page: cpage},
+		})
+		lpage = resp.LastPage
+		log.Printf("READ ISSUE: %v / %v (%v)", cpage, resp.LastPage, len(s.repos))
+		if err != nil {
+			return err
+		}
+		for _, issue := range issues {
+			s.issues = append(s.issues, convertIssue(issue))
+		}
+
+		cpage++
+	}
+
+	return nil
+}
 
 func (s *Server) startup(ctx context.Context) error {
 	cpage := 1
 	lpage := 1
 
 	s.repos = []string{}
+	s.issues = []*pb.GithubIssue{}
 	for cpage <= lpage {
 		// Read all the repos
 		repos, resp, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{
@@ -48,6 +88,8 @@ func (s *Server) startup(ctx context.Context) error {
 
 	// Ensure we have a callback on each repo
 	for _, repo := range s.repos {
+		s.loadIssues(ctx, repo)
+
 		hooks, _, err := s.client.Repositories.ListHooks(ctx, s.user, repo, &github.ListOptions{})
 		if err != nil {
 			return err
@@ -74,12 +116,16 @@ func (s *Server) startup(ctx context.Context) error {
 		}
 	}
 
+	trackedIssues.Set(float64(len(s.issues)))
+
 	// Install the webhook
-	http.HandleFunc("/", s.githubwebhook)
-	err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
-	if err != nil {
-		panic(err)
-	}
+	go func() {
+		http.HandleFunc("/", s.githubwebhook)
+		err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	return nil
 }

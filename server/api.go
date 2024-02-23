@@ -18,7 +18,9 @@ type Server struct {
 	client *github.Client
 	repos  []string
 	user   string
+	issues []*pb.GithubIssue
 }
+
 
 func NewServer(client *github.Client, user string) *Server {
 	s := &Server{client: client, user: user}

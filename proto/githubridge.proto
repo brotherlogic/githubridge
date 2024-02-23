@@ -4,6 +4,12 @@ package githubridge;
 
 option go_package = "github.com/brotherlogic/githubridge/proto";
 
+message GithubIssue {
+    int64 id = 1;
+    string user = 2;
+    string repo = 3;
+    string title = 4;
+}
 
 message CreateIssueRequest {
     string user = 1;
