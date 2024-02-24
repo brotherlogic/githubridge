@@ -105,3 +105,7 @@ func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.Get
 		Comments: int32(issue.GetComments()),
 	}, nil
 }
+
+func (s *Server) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
+	return &pb.GetIssuesResponse{Issues: s.issues}, nil
+}
