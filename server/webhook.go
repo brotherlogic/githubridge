@@ -6,7 +6,20 @@ import (
 
 	pb "github.com/brotherlogic/githubridge/proto"
 	"github.com/google/go-github/v50/github"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"google.golang.org/protobuf/proto"
+)
+
+var (
+	issueAdds = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "githubridge_issue_adds",
+		Help: "The number of repos being tracked",
+	})
+	issueCloses = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "githubridge_issue_closes",
+		Help: "The number of repos being tracked",
+	})
 )
 
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +35,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		action := event.Event
 		log.Printf("%v -> %v", repo, action)
 		if action == proto.String("closed") {
+			issueCloses.Inc()
 			var nissues []*pb.GithubIssue
 			for _, issue := range s.issues {
 				if issue.GetRepo() != *repo &&
@@ -34,6 +48,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 			s.issues = nissues
 			trackedIssues.Set(float64(len(s.issues)))
 		} else if action == proto.String("open") {
+			issueAdds.Inc()
 			s.issues = append(s.issues, &pb.GithubIssue{
 				Repo:  *repo,
 				User:  event.Issue.Repository.Owner.GetName(),
