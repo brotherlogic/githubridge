@@ -71,6 +71,16 @@ func (s *Server) startup(ctx context.Context) error {
 
 	s.repos = []string{}
 	s.issues = []*pb.GithubIssue{}
+
+	// Install the webhook
+	go func() {
+		http.HandleFunc("/", s.githubwebhook)
+		err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 	for cpage <= lpage {
 		// Read all the repos
 		repos, resp, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{
@@ -122,15 +132,6 @@ func (s *Server) startup(ctx context.Context) error {
 	}
 
 	trackedIssues.Set(float64(len(s.issues)))
-
-	// Install the webhook
-	go func() {
-		http.HandleFunc("/", s.githubwebhook)
-		err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
-		if err != nil {
-			panic(err)
-		}
-	}()
 
 	return nil
 }

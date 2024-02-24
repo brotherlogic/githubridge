@@ -33,6 +33,13 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 			s.issues = nissues
 			trackedIssues.Set(float64(len(s.issues)))
+		} else if action == proto.String("open") {
+			s.issues = append(s.issues, &pb.GithubIssue{
+				Repo:  *repo,
+				User:  event.Issue.Repository.Owner.GetName(),
+				Id:    event.Issue.GetID(),
+				Title: event.Issue.GetTitle(),
+			})
 		}
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
