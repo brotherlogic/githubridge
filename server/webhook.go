@@ -34,6 +34,9 @@ var (
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	webhooks.Inc()
 	payload, err := github.ValidatePayload(r, nil)
+	if err != nil {
+		log.Printf("Bad payload: %v", err)
+	}
 
 	event, err := github.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
@@ -42,9 +45,9 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	pings.With(prometheus.Labels{"type": fmt.Sprintf("%T", event)})
 
 	switch event := event.(type) {
-	case *github.IssueEvent:
+	case *github.IssuesEvent:
 		repo := event.Issue.Repository.Name
-		action := event.Event
+		action := event.Action
 		log.Printf("%v -> %v", repo, action)
 		if action == proto.String("closed") {
 			issueCloses.Inc()
