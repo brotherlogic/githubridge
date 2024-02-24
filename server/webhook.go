@@ -48,12 +48,13 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		repo := *event.Repo.Name
 		action := *event.Action
 		log.Printf("%v -> %v", repo, action)
+		log.Printf("REPO: %v", *event.Repo)
 		if action == "closed" {
 			issueCloses.Inc()
 			var nissues []*pb.GithubIssue
 			for _, issue := range s.issues {
 				if issue.GetRepo() != repo &&
-					issue.GetUser() != *event.Repo.Owner.Name &&
+					issue.GetUser() != *event.Repo.Get &&
 					issue.GetId() != event.Issue.GetID() {
 					nissues = append(nissues, issue)
 				}
@@ -61,11 +62,11 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 			s.issues = nissues
 			trackedIssues.Set(float64(len(s.issues)))
-		} else if action == "open" {
+		} else if action == "opened" {
 			issueAdds.Inc()
 			s.issues = append(s.issues, &pb.GithubIssue{
 				Repo:  repo,
-				User:  event.Issue.Repository.Owner.GetName(),
+				User:  event.Repo.Owner.GetName(),
 				Id:    event.Issue.GetID(),
 				Title: event.Issue.GetTitle(),
 			})
