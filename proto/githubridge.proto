@@ -28,6 +28,11 @@ message GetIssueRequest {
     int32 id = 3;
 }
 
+message GetIssuesRequest {}
+message GetIssuesResponse {
+    repeated GithubIssue issues = 1;
+}
+
 message GetIssueResponse {
     string state = 1;
     int32 comments = 2;
@@ -36,7 +41,7 @@ message GetIssueResponse {
 message CloseIssueRequest {
     string user = 1;
     string repo = 2;
-    int32 id = 3;
+    int64 id = 3;
 }
 
 message CloseIssueResponse {}
@@ -53,6 +58,7 @@ message CommentOnIssueResponse{}
 service GithubridgeService {
     rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
     rpc GetIssue(GetIssueRequest) returns (GetIssueResponse);
+    rpc GetIssues(GetIssuesRequest) returns (GetIssuesResponse);
     rpc CloseIssue(CloseIssueRequest) returns (CloseIssueResponse);
     rpc CommentOnIssue(CommentOnIssueRequest) returns (CommentOnIssueResponse);
 }

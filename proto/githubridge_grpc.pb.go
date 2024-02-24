@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type GithubridgeServiceClient interface {
 	CreateIssue(ctx context.Context, in *CreateIssueRequest, opts ...grpc.CallOption) (*CreateIssueResponse, error)
 	GetIssue(ctx context.Context, in *GetIssueRequest, opts ...grpc.CallOption) (*GetIssueResponse, error)
+	GetIssues(ctx context.Context, in *GetIssuesRequest, opts ...grpc.CallOption) (*GetIssuesResponse, error)
 	CloseIssue(ctx context.Context, in *CloseIssueRequest, opts ...grpc.CallOption) (*CloseIssueResponse, error)
 	CommentOnIssue(ctx context.Context, in *CommentOnIssueRequest, opts ...grpc.CallOption) (*CommentOnIssueResponse, error)
 }
@@ -54,6 +55,15 @@ func (c *githubridgeServiceClient) GetIssue(ctx context.Context, in *GetIssueReq
 	return out, nil
 }
 
+func (c *githubridgeServiceClient) GetIssues(ctx context.Context, in *GetIssuesRequest, opts ...grpc.CallOption) (*GetIssuesResponse, error) {
+	out := new(GetIssuesResponse)
+	err := c.cc.Invoke(ctx, "/githubridge.GithubridgeService/GetIssues", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *githubridgeServiceClient) CloseIssue(ctx context.Context, in *CloseIssueRequest, opts ...grpc.CallOption) (*CloseIssueResponse, error) {
 	out := new(CloseIssueResponse)
 	err := c.cc.Invoke(ctx, "/githubridge.GithubridgeService/CloseIssue", in, out, opts...)
@@ -78,6 +88,7 @@ func (c *githubridgeServiceClient) CommentOnIssue(ctx context.Context, in *Comme
 type GithubridgeServiceServer interface {
 	CreateIssue(context.Context, *CreateIssueRequest) (*CreateIssueResponse, error)
 	GetIssue(context.Context, *GetIssueRequest) (*GetIssueResponse, error)
+	GetIssues(context.Context, *GetIssuesRequest) (*GetIssuesResponse, error)
 	CloseIssue(context.Context, *CloseIssueRequest) (*CloseIssueResponse, error)
 	CommentOnIssue(context.Context, *CommentOnIssueRequest) (*CommentOnIssueResponse, error)
 }
@@ -91,6 +102,9 @@ func (UnimplementedGithubridgeServiceServer) CreateIssue(context.Context, *Creat
 }
 func (UnimplementedGithubridgeServiceServer) GetIssue(context.Context, *GetIssueRequest) (*GetIssueResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIssue not implemented")
+}
+func (UnimplementedGithubridgeServiceServer) GetIssues(context.Context, *GetIssuesRequest) (*GetIssuesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIssues not implemented")
 }
 func (UnimplementedGithubridgeServiceServer) CloseIssue(context.Context, *CloseIssueRequest) (*CloseIssueResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloseIssue not implemented")
@@ -146,6 +160,24 @@ func _GithubridgeService_GetIssue_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GithubridgeService_GetIssues_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIssuesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GithubridgeServiceServer).GetIssues(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/githubridge.GithubridgeService/GetIssues",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GithubridgeServiceServer).GetIssues(ctx, req.(*GetIssuesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _GithubridgeService_CloseIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CloseIssueRequest)
 	if err := dec(in); err != nil {
@@ -196,6 +228,10 @@ var GithubridgeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetIssue",
 			Handler:    _GithubridgeService_GetIssue_Handler,
+		},
+		{
+			MethodName: "GetIssues",
+			Handler:    _GithubridgeService_GetIssues_Handler,
 		},
 		{
 			MethodName: "CloseIssue",
