@@ -25,9 +25,14 @@ var (
 		Name: "githubridge_pings",
 		Help: "The number of repos being tracked",
 	}, []string{"type"})
+	webhooks = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "githubridge_webhooks",
+		Help: "The number of repos being tracked",
+	})
 )
 
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
+	webhooks.Inc()
 	payload, err := github.ValidatePayload(r, nil)
 
 	event, err := github.ParseWebHook(github.WebHookType(r), payload)
