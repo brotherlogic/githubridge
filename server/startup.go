@@ -27,12 +27,12 @@ var (
 	callback = "http://ghwebhook.brotherlogic-backend.com/"
 )
 
-func convertIssue(issue *github.Issue) *pb.GithubIssue {
+func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 	log.Printf("CONVERT: %v", issue)
 	return &pb.GithubIssue{
 		Id:    issue.GetID(),
-		Repo:  issue.GetRepository().GetName(),
-		User:  issue.GetRepository().GetOwner().GetLogin(),
+		Repo:  repo,
+		User:  issue.GetUser().GetLogin(),
 		Title: issue.GetTitle(),
 	}
 }
@@ -53,7 +53,7 @@ func (s *Server) loadIssues(ctx context.Context, repo string) error {
 		}
 		for _, issue := range issues {
 			if !issue.IsPullRequest() {
-				nissue := convertIssue(issue)
+				nissue := convertIssue(issue, repo)
 				log.Printf("FOUND ISSUE: %v", nissue)
 				s.issues = append(s.issues, nissue)
 			}
