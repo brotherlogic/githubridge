@@ -20,6 +20,18 @@ spec:
     - name: webhook
       port: 80
       targetPort: 80
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 5
+  startupProbe:
+    httpGet:
+      path: /healthz
+      port: 80
+    failureThreshold: 30
+    periodSeconds: 10 
   selector:
     app: githubridge
 ---
