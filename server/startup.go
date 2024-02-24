@@ -74,7 +74,15 @@ func (s *Server) startup(ctx context.Context) error {
 
 	// Install the webhook
 	go func() {
+		http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+			if s.ready {
+				fmt.Fprintf(w, "OK")
+			} else {
+				fmt.Fprintf(w, "NO")
+			}
+		})
 		http.HandleFunc("/", s.githubwebhook)
+
 		err := http.ListenAndServe(fmt.Sprintf(":%v", 80), nil)
 		if err != nil {
 			panic(err)

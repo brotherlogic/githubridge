@@ -19,15 +19,17 @@ type Server struct {
 	repos  []string
 	user   string
 	issues []*pb.GithubIssue
+	ready  bool // ready to server
 }
 
 func NewServer(client *github.Client, user string) *Server {
-	s := &Server{client: client, user: user}
+	s := &Server{client: client, user: user, ready: true}
 	err := s.startup(context.Background())
 	if err != nil {
 		log.Printf("Failed startup: %v", err)
 		os.Exit(1)
 	}
+	s.ready = true
 	return s
 }
 
