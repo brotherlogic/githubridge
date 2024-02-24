@@ -70,6 +70,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 				Id:    event.Issue.GetID(),
 				Title: event.Issue.GetTitle(),
 			})
+			trackedIssues.Set(float64(len(s.issues)))
 		}
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
