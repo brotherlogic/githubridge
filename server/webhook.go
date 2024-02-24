@@ -34,6 +34,9 @@ var (
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	webhooks.Inc()
 	payload, err := github.ValidatePayload(r, nil)
+	if err != nil {
+		log.Printf("Bad payload: %v", err)
+	}
 
 	event, err := github.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
