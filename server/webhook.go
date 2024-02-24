@@ -9,7 +9,6 @@ import (
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"google.golang.org/protobuf/proto"
 )
 
 var (
@@ -46,14 +45,14 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.(type) {
 	case *github.IssuesEvent:
-		repo := event.Repo.Name
-		action := event.Action
+		repo := *event.Repo.Name
+		action := *event.Action
 		log.Printf("%v -> %v", repo, action)
-		if action == proto.String("closed") {
+		if action == "closed" {
 			issueCloses.Inc()
 			var nissues []*pb.GithubIssue
 			for _, issue := range s.issues {
-				if issue.GetRepo() != *repo &&
+				if issue.GetRepo() != repo &&
 					issue.GetUser() != *event.Repo.Owner.Name &&
 					issue.GetId() != event.Issue.GetID() {
 					nissues = append(nissues, issue)
@@ -62,10 +61,10 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 			s.issues = nissues
 			trackedIssues.Set(float64(len(s.issues)))
-		} else if action == proto.String("open") {
+		} else if action == "open" {
 			issueAdds.Inc()
 			s.issues = append(s.issues, &pb.GithubIssue{
-				Repo:  *repo,
+				Repo:  repo,
 				User:  event.Issue.Repository.Owner.GetName(),
 				Id:    event.Issue.GetID(),
 				Title: event.Issue.GetTitle(),
