@@ -31,7 +31,7 @@ spec:
       path: /healthz
       port: 80
     failureThreshold: 30
-    periodSeconds: 10 
+    periodSeconds: 10
   selector:
     app: githubridge
 ---
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: githubridge
-          image: registry.brotherlogic-backend.com/brotherlogic/githubridge:0.2726.0 # {"$imagepolicy": "flux-system:githubridge"}
+          image: registry.brotherlogic-backend.com/brotherlogic/githubridge:0.2727.0 # {"$imagepolicy": "flux-system:githubridge"}
           ports:
             - containerPort: 8080
           env:
