@@ -54,7 +54,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 			var nissues []*pb.GithubIssue
 			for _, issue := range s.issues {
 				if issue.GetRepo() != repo &&
-					issue.GetUser() != *event.Repo.Get &&
+					issue.GetUser() != event.Repo.Owner.GetName() &&
 					issue.GetId() != event.Issue.GetID() {
 					nissues = append(nissues, issue)
 				}
