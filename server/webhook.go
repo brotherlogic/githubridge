@@ -46,7 +46,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.(type) {
 	case *github.IssuesEvent:
-		repo := event.Issue.Repository.Name
+		repo := event.Repo.Name
 		action := event.Action
 		log.Printf("%v -> %v", repo, action)
 		if action == proto.String("closed") {
@@ -54,7 +54,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 			var nissues []*pb.GithubIssue
 			for _, issue := range s.issues {
 				if issue.GetRepo() != *repo &&
-					issue.GetUser() != *event.Issue.Repository.Owner.Name &&
+					issue.GetUser() != *event.Repo.Owner.Name &&
 					issue.GetId() != event.Issue.GetID() {
 					nissues = append(nissues, issue)
 				}
