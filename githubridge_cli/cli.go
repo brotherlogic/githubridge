@@ -36,7 +36,7 @@ func main() {
 			log.Fatalf("Unable to drain queue: %v", err)
 		}
 		for _, issue := range resp.GetIssues() {
-			fmt.Printf("Drained %v items\n", issue.GetTitle())
+			fmt.Printf("%v\n", issue.GetTitle())
 		}
 	}
 }
