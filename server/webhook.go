@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -20,6 +21,10 @@ var (
 		Name: "githubridge_issue_closes",
 		Help: "The number of repos being tracked",
 	})
+	pings = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "githubridge_pings",
+		Help: "The number of repos being tracked",
+	}, []string{"type"})
 )
 
 func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
@@ -29,6 +34,8 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Bad stuff: %v", err)
 	}
+	pings.With(prometheus.Labels{"type": fmt.Sprintf("%T", event)})
+
 	switch event := event.(type) {
 	case *github.IssueEvent:
 		repo := event.Issue.Repository.Name
