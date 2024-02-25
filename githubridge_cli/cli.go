@@ -44,7 +44,7 @@ func main() {
 		id := closeSet.Int64("id", -1, "Issue ID")
 		repo := closeSet.String("repo", "", "Repo")
 		user := closeSet.String("user", "brotherlogic", "User")
-		if err := closeSet.Parse(os.Args[3:]); err != nil {
+		if err := closeSet.Parse(os.Args[3:]); err == nil {
 			_, err := client.CloseIssue(ctx, &pb.CloseIssueRequest{
 				User: *user,
 				Repo: *repo,
