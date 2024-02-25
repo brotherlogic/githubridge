@@ -54,6 +54,21 @@ func main() {
 				log.Printf("Error on close: %v", err)
 			}
 		}
+	case "open":
+		openSet := flag.NewFlagSet("close", flag.ExitOnError)
+		repo := openSet.String("repo", "", "Repo")
+		user := openSet.String("user", "brotherlogic", "User")
+		title := openSet.String("title", "", "Title")
+		if err := openSet.Parse(os.Args[3:]); err == nil {
+			_, err := client.CreateIssue(ctx, &pb.CreateIssueRequest{
+				User:  *user,
+				Repo:  *repo,
+				Title: *title,
+			})
+			if err != nil {
+				log.Printf("Error on close: %v", err)
+			}
+		}
 
 	}
 }
