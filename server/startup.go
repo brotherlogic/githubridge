@@ -101,6 +101,7 @@ func (s *Server) startup(ctx context.Context) error {
 			return err
 		}
 		for _, repo := range repos {
+			log.Printf("REPO: %v", repo.GetName())
 			s.repos = append(s.repos, repo.GetName())
 		}
 
