@@ -94,6 +94,7 @@ func (s *Server) startup(ctx context.Context) error {
 		// Read all the repos
 		repos, resp, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{
 			ListOptions: github.ListOptions{Page: cpage},
+			Type:        "all",
 		})
 		lpage = resp.LastPage
 		log.Printf("READ: %v / %v (%v)", cpage, resp.LastPage, len(s.repos))
