@@ -48,7 +48,6 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		repo := *event.Repo.Name
 		action := *event.Action
 		log.Printf("%v -> %v", repo, action)
-		log.Printf("REPO: %v", *event.Repo)
 		if action == "closed" {
 			issueCloses.Inc()
 			var nissues []*pb.GithubIssue
