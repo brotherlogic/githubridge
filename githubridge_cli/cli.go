@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -38,5 +39,21 @@ func main() {
 		for _, issue := range resp.GetIssues() {
 			fmt.Printf("%v - %v / %v %v\n", issue.GetTitle(), issue.GetUser(), issue.GetRepo(), issue.GetId())
 		}
+	case "close":
+		closeSet := flag.NewFlagSet("close", flag.ExitOnError)
+		id := closeSet.Int64("id", -1, "Issue ID")
+		repo := closeSet.String("repo", "", "Repo")
+		user := closeSet.String("user", "brotherlogic", "User")
+		if err := closeSet.Parse(os.Args[3:]); err != nil {
+			_, err := client.CloseIssue(ctx, &pb.CloseIssueRequest{
+				User: *user,
+				Repo: *repo,
+				Id:   *id,
+			})
+			if err != nil {
+				log.Printf("Error on close: %v", err)
+			}
+		}
+
 	}
 }
