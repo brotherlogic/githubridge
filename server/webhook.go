@@ -55,7 +55,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 			for _, issue := range s.issues {
 				if issue.GetRepo() != repo ||
 					issue.GetUser() != event.Repo.Owner.GetLogin() ||
-					issue.GetId() != event.Issue.GetID() {
+					issue.GetId() != int64(event.Issue.GetNumber()) {
 					nissues = append(nissues, issue)
 				}
 			}
@@ -67,7 +67,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 			s.issues = append(s.issues, &pb.GithubIssue{
 				Repo:  repo,
 				User:  event.Repo.Owner.GetLogin(),
-				Id:    event.Issue.GetID(),
+				Id:    int64(event.Issue.GetNumber()),
 				Title: event.Issue.GetTitle(),
 			})
 			trackedIssues.Set(float64(len(s.issues)))
