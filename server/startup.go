@@ -92,7 +92,7 @@ func (s *Server) startup(ctx context.Context) error {
 
 	for cpage <= lpage {
 		// Read all the repos
-		repos, resp, err := s.client.Repositories.List(ctx, s.user, &github.RepositoryListOptions{
+		repos, resp, err := s.client.Repositories.List(ctx, "", &github.RepositoryListOptions{
 			ListOptions: github.ListOptions{Page: cpage},
 			Type:        "all",
 		})
