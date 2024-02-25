@@ -61,15 +61,6 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
 
-	// Delete the issue from the cache
-	var nissue []*pb.GithubIssue
-	for _, issue := range s.issues {
-		if issue.GetUser() != req.GetUser() && issue.GetRepo() != req.GetRepo() && issue.GetId() != int64(req.GetId()) {
-			nissue = append(nissue, issue)
-		}
-	}
-	s.issues = nissue
-
 	return &pb.CloseIssueResponse{}, nil
 }
 
