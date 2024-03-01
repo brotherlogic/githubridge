@@ -15,11 +15,12 @@ import (
 )
 
 type Server struct {
-	client *github.Client
-	repos  []string
-	user   string
-	issues []*pb.GithubIssue
-	ready  bool // ready to server
+	client  *github.Client
+	repos   []string
+	user    string
+	issues  []*pb.GithubIssue
+	ready   bool // ready to server
+	authKey string
 }
 
 func NewServer(client *github.Client, user string) *Server {
@@ -29,6 +30,9 @@ func NewServer(client *github.Client, user string) *Server {
 		log.Printf("Failed startup: %v", err)
 		os.Exit(1)
 	}
+
+	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
+
 	s.ready = true
 	return s
 }
