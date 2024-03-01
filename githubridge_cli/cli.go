@@ -10,19 +10,24 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 )
 
 func main() {
 	// Load the token
-	password, err := os.ReadFile("~/.ghb")
+	dirname, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	password, err := os.ReadFile(fmt.Sprintf("%v/.ghb", dirname))
 	if err != nil {
 		log.Fatalf("Can't read token: %v", err)
 	}
 
-	base := context.WithValue(context.Background(), "auth-token", string(password))
-	ctx, cancel := context.WithTimeout(base, time.Minute*60)
+	mContext := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(password))
+	ctx, cancel := context.WithTimeout(mContext, time.Minute*60)
 	defer cancel()
 
 	conn, err := grpc.Dial(os.Args[1], grpc.WithTransportCredentials(insecure.NewCredentials()))
