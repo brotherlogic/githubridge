@@ -15,16 +15,18 @@ import (
 )
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*60)
+	// Load the token
+	password, err := os.ReadFile("~/.ghb")
+	if err != nil {
+		log.Fatalf("Can't read token: %v", err)
+	}
+
+	base := context.WithValue(context.Background(), "auth-token", string(password))
+	ctx, cancel := context.WithTimeout(base, time.Minute*60)
 	defer cancel()
 
 	conn, err := grpc.Dial(os.Args[1], grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("Bad dial: %v", err)
-	}
-
-	conn, serr := grpc.Dial(os.Args[1], grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if serr != nil {
 		log.Fatalf("Bad dial: %v", err)
 	}
 

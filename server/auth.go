@@ -13,7 +13,7 @@ func (s *Server) AuthCall(ctx context.Context, req interface{}, info *grpc.Unary
 	key, err := getContextKey(ctx)
 	if err != nil {
 		if key != s.authKey {
-			return nil, status.Errorf(codes.Unauthenticated, "You need to specify the auth-token")
+			return nil, status.Errorf(codes.Unauthenticated, "You need to specify the auth-token (you sent %v)", key)
 		}
 	}
 
