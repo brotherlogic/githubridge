@@ -80,5 +80,10 @@ spec:
                 secretKeyRef:
                   name: ghb
                   key: ghb_token
+            - name: GHB_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ghb-auth
+                  key: ghb_auth_token
       imagePullSecrets:
         - name: regcred
