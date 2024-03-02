@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 )
@@ -17,26 +18,31 @@ type GithubridgeClient interface {
 
 type rClient struct {
 	gClient pb.GithubridgeServiceClient
+	passkey string
 }
 
-func GetClient() (GithubridgeClient, error) {
+func GetClient(pass string) (GithubridgeClient, error) {
 	conn, err := grpc.Dial("githubridge.githubridge:8080", grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
-	return &rClient{gClient: pb.NewGithubridgeServiceClient(conn)}, nil
+	return &rClient{gClient: pb.NewGithubridgeServiceClient(conn), passkey: pass}, nil
 }
 
 func (c *rClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
-	return c.gClient.CreateIssue(ctx, req)
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.CreateIssue(nctx, req)
 }
 
 func (c *rClient) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
-	return c.gClient.CloseIssue(ctx, req)
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.CloseIssue(nctx, req)
 }
 func (c *rClient) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error) {
-	return c.gClient.CommentOnIssue(ctx, req)
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.CommentOnIssue(nctx, req)
 }
 func (c *rClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
-	return c.gClient.GetIssue(ctx, req)
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.GetIssue(nctx, req)
 }
