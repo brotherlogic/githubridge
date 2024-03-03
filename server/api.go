@@ -7,11 +7,20 @@ import (
 	"os"
 
 	"github.com/google/go-github/v50/github"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/brotherlogic/githubridge/proto"
+)
+
+var (
+	creates = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "githubridge_creates",
+		Help: "The number of repos being tracked",
+	}, []string{"repo"})
 )
 
 type Server struct {
@@ -49,6 +58,7 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
 
+	creates.With(prometheus.Labels{"repo": req.GetRepo()}).Inc()
 	return &pb.CreateIssueResponse{IssueId: (int64(issue.GetNumber()))}, nil
 }
 
