@@ -21,8 +21,16 @@ type rClient struct {
 	passkey string
 }
 
-func GetClient(pass string) (GithubridgeClient, error) {
-	conn, err := grpc.Dial("githubridge.githubridge:8080", grpc.WithInsecure())
+func GetClientInternal(pass string) (GithubridgeClient, error) {
+	return getClientInternal(pass, "githubridge.githubridge:8080")
+}
+
+func GetClientExternal(pass string) (GithubridgeClient, error) {
+	return getClientInternal(pass, "ghb.brotherlogic-backend.com:80")
+}
+
+func getClientInternal(pass string, address string) (GithubridgeClient, error) {
+	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
