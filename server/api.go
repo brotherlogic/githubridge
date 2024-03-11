@@ -3,8 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
-	"os"
 
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
@@ -23,34 +21,12 @@ var (
 	}, []string{"repo"})
 )
 
-type Server struct {
-	client  *github.Client
-	repos   []string
-	user    string
-	issues  []*pb.GithubIssue
-	ready   bool // ready to server
-	authKey string
-}
-
-func NewServer(client *github.Client, user string) *Server {
-	s := &Server{client: client, user: user, ready: true}
-	err := s.startup(context.Background())
-	if err != nil {
-		log.Printf("Failed startup: %v", err)
-		os.Exit(1)
-	}
-
-	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
-
-	s.ready = true
-	return s
-}
-
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
 	issue, resp, err := s.client.Issues.Create(ctx, req.GetUser(), req.GetRepo(), &github.IssueRequest{
 		Title: proto.String(req.GetTitle()),
 		Body:  proto.String(req.GetBody()),
 	})
+	processResponse(resp)
 	if err != nil {
 		return nil, err
 	}
@@ -67,6 +43,7 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 	_, resp, err := s.client.Issues.Edit(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueRequest{
 		State: proto.String("closed"),
 	})
+	processResponse(resp)
 
 	if err != nil {
 		return nil, err
@@ -82,6 +59,7 @@ func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueReque
 	_, resp, err := s.client.Issues.CreateComment(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueComment{
 		Body: proto.String(req.GetComment()),
 	})
+	processResponse(resp)
 
 	if err != nil {
 		return nil, err
@@ -95,6 +73,7 @@ func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueReque
 
 func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
 	issue, resp, err := s.client.Issues.Get(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()))
+	processResponse(resp)
 
 	if resp != nil && resp.StatusCode == 404 {
 		return nil, status.Errorf(codes.NotFound, "Cannot find %v/%v/%v", req.User, req.GetRepo(), req.GetId())
