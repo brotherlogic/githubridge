@@ -20,6 +20,7 @@ func convertComment(comment *github.IssueComment) *pb.Comment {
 
 func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*pb.GetCommentsResponse, error) {
 	results, ghr, err := s.client.Issues.ListComments(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueListCommentsOptions{})
+	processResponse(ghr)
 
 	if err != nil {
 		return nil, err
