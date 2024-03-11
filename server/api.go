@@ -22,6 +22,13 @@ var (
 )
 
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
+	// Fail if an issue is open with that name
+	for _, issue := range s.issues {
+		if issue.GetTitle() == req.GetTitle() {
+			return nil, status.Errorf(codes.AlreadyExists, "This issue (%v) already exists", req.GetTitle())
+		}
+	}
+
 	issue, resp, err := s.client.Issues.Create(ctx, req.GetUser(), req.GetRepo(), &github.IssueRequest{
 		Title: proto.String(req.GetTitle()),
 		Body:  proto.String(req.GetBody()),
