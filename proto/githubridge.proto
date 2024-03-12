@@ -70,6 +70,16 @@ message GetCommentsResponse{
     repeated Comment comments = 1;
 }
 
+message GetLabelsRequest {
+    string user = 1;
+    string repo = 2;
+    int32 id = 3;
+}
+
+message GetLabelsResponse {
+    repeated string labels = 1;
+}
+
 service GithubridgeService {
     rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
     rpc GetIssue(GetIssueRequest) returns (GetIssueResponse);
@@ -77,4 +87,5 @@ service GithubridgeService {
     rpc CloseIssue(CloseIssueRequest) returns (CloseIssueResponse);
     rpc CommentOnIssue(CommentOnIssueRequest) returns (CommentOnIssueResponse);
     rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
+    rpc GetLabels(GetLabelsRequest) returns (GetLabelsResponse);
 }
