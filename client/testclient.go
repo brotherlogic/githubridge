@@ -32,3 +32,7 @@ func (c *TestClient) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueR
 func (c *TestClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
 	return &pb.GetIssueResponse{}, nil
 }
+
+func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
+	return &pb.GetLabelsResponse{}, nil
+}

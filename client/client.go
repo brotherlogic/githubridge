@@ -14,6 +14,7 @@ type GithubridgeClient interface {
 	CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error)
 	CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error)
 	GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error)
+	GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error)
 }
 
 type rClient struct {
@@ -53,4 +54,8 @@ func (c *rClient) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequ
 func (c *rClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
 	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
 	return c.gClient.GetIssue(nctx, req)
+}
+func (c *rClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.GetLabels(nctx, req)
 }
