@@ -36,3 +36,7 @@ func (c *TestClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb
 func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
 	return &pb.GetLabelsResponse{}, nil
 }
+
+func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
+	return &pb.GetIssuesResponse{Issues: []*pb.GithubIssue{}}, nil
+}
