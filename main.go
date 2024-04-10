@@ -19,9 +19,10 @@ import (
 )
 
 var (
-	port        = flag.Int("port", 8080, "Server port for grpc traffic")
-	metricsPort = flag.Int("metrics_port", 8081, "Metrics port")
-	owner       = flag.String("owner", "brotherlogic", "")
+	port         = flag.Int("port", 8080, "Server port for grpc traffic")
+	metricsPort  = flag.Int("metrics_port", 8081, "Metrics port")
+	internalPort = flag.Int("internal_port", 8082, "Internal port")
+	owner        = flag.String("owner", "brotherlogic", "")
 )
 
 func main() {
@@ -43,6 +44,17 @@ func main() {
 	go func() {
 		err := http.ListenAndServe(fmt.Sprintf(":%v", *metricsPort), nil)
 		log.Fatalf("gramophile is unable to serve metrics: %v", err)
+	}()
+
+	lisInt, err := net.Listen("tcp", fmt.Sprintf(":%d", *internalPort))
+	if err != nil {
+		log.Fatalf("mdb is unable to listen on the internal grpc port %v: %v", *port, err)
+	}
+	gsInt := grpc.NewServer()
+	pb.RegisterGithubridgeServiceServer(gsInt, s)
+	go func() {
+		err := gsInt.Serve(lisInt)
+		log.Fatalf("mdb is unable to sever grpc internally: %v", err)
 	}()
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))

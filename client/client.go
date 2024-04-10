@@ -23,8 +23,8 @@ type rClient struct {
 	passkey string
 }
 
-func GetClientInternal(pass string) (GithubridgeClient, error) {
-	return getClientInternal(pass, "githubridge.githubridge:8080")
+func GetClientInternal() (GithubridgeClient, error) {
+	return getClientInternal("", "githubridge.githubridge:8080")
 }
 
 func GetClientExternal(pass string) (GithubridgeClient, error) {
