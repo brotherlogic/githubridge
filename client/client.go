@@ -24,7 +24,7 @@ type rClient struct {
 }
 
 func GetClientInternal() (GithubridgeClient, error) {
-	return getClientInternal("", "githubridge.githubridge:8080")
+	return getClientInternal("", "githubridge.githubridge:8082")
 }
 
 func GetClientExternal(pass string) (GithubridgeClient, error) {
