@@ -52,6 +52,7 @@ func main() {
 	}
 	gsInt := grpc.NewServer()
 	pb.RegisterGithubridgeServiceServer(gsInt, s)
+	
 	go func() {
 		err := gsInt.Serve(lisInt)
 		log.Fatalf("mdb is unable to sever grpc internally: %v", err)
