@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
