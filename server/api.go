@@ -26,7 +26,7 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 	// Fail if an issue is open with that name
 	for _, issue := range s.issues {
 		if issue.GetTitle() == req.GetTitle() {
-			log.Printf("Returning error with issue")
+			log.Printf("Returning error with issue: %v", issue)
 			return &pb.CreateIssueResponse{IssueId: issue.GetId()}, status.Errorf(codes.AlreadyExists, "This issue (%v) already exists, returned", req.GetTitle())
 		}
 	}
