@@ -20,6 +20,10 @@ message CreateIssueRequest {
 
 message CreateIssueResponse {
     int64 issue_id = 1;
+
+    // Indicates we're trying to create an issue that already exists, and 
+    // that this is what has been returned
+    bool already_existing_issue = 2;
 }
 
 message GetIssueRequest {
