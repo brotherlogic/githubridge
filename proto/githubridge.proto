@@ -9,6 +9,7 @@ message GithubIssue {
     string user = 2;
     string repo = 3;
     string title = 4;
+    int64 opened_date = 5;
 }
 
 message CreateIssueRequest {
