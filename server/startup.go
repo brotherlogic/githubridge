@@ -30,10 +30,11 @@ var (
 func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 	log.Printf("CONVERT: %v", issue)
 	return &pb.GithubIssue{
-		Id:    int64(issue.GetNumber()),
-		Repo:  repo,
-		User:  issue.GetUser().GetLogin(),
-		Title: issue.GetTitle(),
+		Id:         int64(issue.GetNumber()),
+		Repo:       repo,
+		User:       issue.GetUser().GetLogin(),
+		Title:      issue.GetTitle(),
+		OpenedDate: issue.GetCreatedAt().Unix(),
 	}
 }
 
