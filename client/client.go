@@ -16,6 +16,7 @@ type GithubridgeClient interface {
 	GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error)
 	GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error)
 	GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error)
+	AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error)
 }
 
 type rClient struct {
@@ -37,6 +38,11 @@ func getClientInternal(pass string, address string) (GithubridgeClient, error) {
 		return nil, err
 	}
 	return &rClient{gClient: pb.NewGithubridgeServiceClient(conn), passkey: pass}, nil
+}
+
+func (c *rClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.AddLabel(nctx, req)
 }
 
 func (c *rClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {

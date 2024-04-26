@@ -2,6 +2,7 @@ package githubridgeclient
 
 import (
 	"context"
+	"fmt"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 )
@@ -9,10 +10,16 @@ import (
 type TestClient struct {
 	counter int64
 	issues  map[string]int64
+	labels  map[string]string
 }
 
 func GetTestClient() GithubridgeClient {
 	return &TestClient{issues: make(map[string]int64), counter: 0}
+}
+
+func (c *TestClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
+	c.labels[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())] = req.GetLabel()
+	return &pb.AddLabelResponse{}, nil
 }
 
 func (c *TestClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {

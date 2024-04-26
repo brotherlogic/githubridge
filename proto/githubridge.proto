@@ -85,7 +85,17 @@ message GetLabelsResponse {
     repeated string labels = 1;
 }
 
+message AddLabelRequest {
+    string user = 1;
+    string repo = 2;
+    int32 id = 3;
+    string label = 4;
+}
+
+message AddLabelResponse {}
+
 service GithubridgeService {
+    rpc AddLabel(AddLabelRequest) returns (AddLabelResponse);
     rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
     rpc GetIssue(GetIssueRequest) returns (GetIssueResponse);
     rpc GetIssues(GetIssuesRequest) returns (GetIssuesResponse);

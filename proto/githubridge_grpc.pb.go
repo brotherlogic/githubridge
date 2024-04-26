@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	GithubridgeService_AddLabel_FullMethodName       = "/githubridge.GithubridgeService/AddLabel"
 	GithubridgeService_CreateIssue_FullMethodName    = "/githubridge.GithubridgeService/CreateIssue"
 	GithubridgeService_GetIssue_FullMethodName       = "/githubridge.GithubridgeService/GetIssue"
 	GithubridgeService_GetIssues_FullMethodName      = "/githubridge.GithubridgeService/GetIssues"
@@ -32,6 +33,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GithubridgeServiceClient interface {
+	AddLabel(ctx context.Context, in *AddLabelRequest, opts ...grpc.CallOption) (*AddLabelResponse, error)
 	CreateIssue(ctx context.Context, in *CreateIssueRequest, opts ...grpc.CallOption) (*CreateIssueResponse, error)
 	GetIssue(ctx context.Context, in *GetIssueRequest, opts ...grpc.CallOption) (*GetIssueResponse, error)
 	GetIssues(ctx context.Context, in *GetIssuesRequest, opts ...grpc.CallOption) (*GetIssuesResponse, error)
@@ -47,6 +49,15 @@ type githubridgeServiceClient struct {
 
 func NewGithubridgeServiceClient(cc grpc.ClientConnInterface) GithubridgeServiceClient {
 	return &githubridgeServiceClient{cc}
+}
+
+func (c *githubridgeServiceClient) AddLabel(ctx context.Context, in *AddLabelRequest, opts ...grpc.CallOption) (*AddLabelResponse, error) {
+	out := new(AddLabelResponse)
+	err := c.cc.Invoke(ctx, GithubridgeService_AddLabel_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *githubridgeServiceClient) CreateIssue(ctx context.Context, in *CreateIssueRequest, opts ...grpc.CallOption) (*CreateIssueResponse, error) {
@@ -116,6 +127,7 @@ func (c *githubridgeServiceClient) GetLabels(ctx context.Context, in *GetLabelsR
 // All implementations should embed UnimplementedGithubridgeServiceServer
 // for forward compatibility
 type GithubridgeServiceServer interface {
+	AddLabel(context.Context, *AddLabelRequest) (*AddLabelResponse, error)
 	CreateIssue(context.Context, *CreateIssueRequest) (*CreateIssueResponse, error)
 	GetIssue(context.Context, *GetIssueRequest) (*GetIssueResponse, error)
 	GetIssues(context.Context, *GetIssuesRequest) (*GetIssuesResponse, error)
@@ -129,6 +141,9 @@ type GithubridgeServiceServer interface {
 type UnimplementedGithubridgeServiceServer struct {
 }
 
+func (UnimplementedGithubridgeServiceServer) AddLabel(context.Context, *AddLabelRequest) (*AddLabelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddLabel not implemented")
+}
 func (UnimplementedGithubridgeServiceServer) CreateIssue(context.Context, *CreateIssueRequest) (*CreateIssueResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateIssue not implemented")
 }
@@ -160,6 +175,24 @@ type UnsafeGithubridgeServiceServer interface {
 
 func RegisterGithubridgeServiceServer(s grpc.ServiceRegistrar, srv GithubridgeServiceServer) {
 	s.RegisterService(&GithubridgeService_ServiceDesc, srv)
+}
+
+func _GithubridgeService_AddLabel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddLabelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GithubridgeServiceServer).AddLabel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GithubridgeService_AddLabel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GithubridgeServiceServer).AddLabel(ctx, req.(*AddLabelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _GithubridgeService_CreateIssue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -295,6 +328,10 @@ var GithubridgeService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "githubridge.GithubridgeService",
 	HandlerType: (*GithubridgeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AddLabel",
+			Handler:    _GithubridgeService_AddLabel_Handler,
+		},
 		{
 			MethodName: "CreateIssue",
 			Handler:    _GithubridgeService_CreateIssue_Handler,
