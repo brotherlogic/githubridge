@@ -23,7 +23,7 @@ func GetTestClient() GithubridgeClient {
 
 func (c *TestClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
 	label := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
-	c.labels[label] = append(c.labels[label]), req.GetLabel()
+	c.labels[label] = append(c.labels[label], req.GetLabel())
 	return &pb.AddLabelResponse{}, nil
 }
 
@@ -46,7 +46,7 @@ func (c *TestClient) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb
 }
 
 func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
-	return &pb.GetLabelsResponse{Labels: c.labels[[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]]}, nil
+	return &pb.GetLabelsResponse{Labels: c.labels[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
 }
 
 func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
