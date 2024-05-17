@@ -51,5 +51,9 @@ func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*
 }
 
 func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
-	return &pb.GetIssuesResponse{Issues: []*pb.GithubIssue{}}, nil
+	var issues []*pb.GithubIssue
+	for c, issue := range c.issues {
+		issues = append(issues, &pb.GithubIssue{Id: int64(c), Title: issue})
+	}
+	return &pb.GetIssuesResponse{Issues: issues}, nil
 }
