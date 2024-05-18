@@ -34,7 +34,13 @@ func (c *TestClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest
 }
 
 func (c *TestClient) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb.CloseIssueResponse, error) {
-	delete(c.issues, req.GetId())
+	var nissues []*pb.GithubIssue
+	for _, issue := range c.issues {
+		if issue.GetRepo() != req.GetRepo() || issue.GetId() != req.GetId() {
+			nissues = append(nissues, issue)
+		}
+	}
+	c.issues = nissues
 	return &pb.CloseIssueResponse{}, nil
 }
 
@@ -51,9 +57,5 @@ func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*
 }
 
 func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
-	var issues []*pb.GithubIssue
-	for c, issue := range c.issues {
-		issues = append(issues, &pb.GithubIssue{Id: int64(c), Title: issue})
-	}
-	return &pb.GetIssuesResponse{Issues: issues}, nil
+	return &pb.GetIssuesResponse{Issues: c.issues}, nil
 }
