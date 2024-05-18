@@ -9,13 +9,13 @@ import (
 
 type TestClient struct {
 	counter int64
-	issues  map[int64]string
+	issues  []*pb.GithubIssue
 	labels  map[string][]string
 }
 
 func GetTestClient() GithubridgeClient {
 	return &TestClient{
-		issues:  make(map[int64]string),
+		issues:  []*pb.GithubIssue{},
 		counter: 0,
 		labels:  make(map[string][]string),
 	}
@@ -29,7 +29,7 @@ func (c *TestClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb
 
 func (c *TestClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
 	c.counter++
-	c.issues[c.counter] = req.GetTitle()
+	c.issues = append(c.issues, &pb.GithubIssue{Id: c.counter, Title: req.GetTitle(), Repo: req.GetRepo()})
 	return &pb.CreateIssueResponse{IssueId: c.counter}, nil
 }
 
