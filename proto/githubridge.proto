@@ -12,6 +12,12 @@ message GithubIssue {
     int64 opened_date = 5;
 }
 
+enum IssueState {
+    ISSUE_STATE_UNKNOWN = 0;
+    ISSUE_STATE_OPEN = 1;
+    ISSUE_STATE_CLOSED = 2;
+}
+
 message CreateIssueRequest {
     string user = 1;
     string repo = 2;

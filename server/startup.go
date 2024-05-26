@@ -29,12 +29,23 @@ var (
 
 func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 	log.Printf("CONVERT: %v", issue)
+
+	issueState := pb.Issue_STATE_UNKNOWN
+	switch issue.GetState() {
+	case "open":
+		issueState = pb.Issue_STATE_OPEN
+	case "closed":
+		issueState = pb.Issue_STATE_CLOSED
+
+	}
+
 	return &pb.GithubIssue{
 		Id:         int64(issue.GetNumber()),
 		Repo:       repo,
 		User:       issue.GetUser().GetLogin(),
 		Title:      issue.GetTitle(),
 		OpenedDate: issue.GetCreatedAt().Unix(),
+		State:      issueState,
 	}
 }
 
