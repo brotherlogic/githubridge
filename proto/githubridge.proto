@@ -10,6 +10,7 @@ message GithubIssue {
     string repo = 3;
     string title = 4;
     int64 opened_date = 5;
+    IssueState state = 6;
 }
 
 enum IssueState {
