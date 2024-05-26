@@ -47,7 +47,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	case *github.IssuesEvent:
 		repo := *event.Repo.Name
 		action := *event.Action
-		log.Printf("%v -> %v", repo, action)
+		log.Printf("%v -> %v [%v]", repo, action, len(s.issues))
 		if action == "closed" {
 			issueCloses.Inc()
 			var nissues []*pb.GithubIssue
@@ -74,4 +74,6 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
 	}
+
+	log.Printf(" -> %v", len(s.issues))
 }
