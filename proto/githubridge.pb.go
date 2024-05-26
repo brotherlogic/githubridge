@@ -74,11 +74,12 @@ type GithubIssue struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id         int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	User       string `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
-	Repo       string `protobuf:"bytes,3,opt,name=repo,proto3" json:"repo,omitempty"`
-	Title      string `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
-	OpenedDate int64  `protobuf:"varint,5,opt,name=opened_date,json=openedDate,proto3" json:"opened_date,omitempty"`
+	Id         int64      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	User       string     `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	Repo       string     `protobuf:"bytes,3,opt,name=repo,proto3" json:"repo,omitempty"`
+	Title      string     `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
+	OpenedDate int64      `protobuf:"varint,5,opt,name=opened_date,json=openedDate,proto3" json:"opened_date,omitempty"`
+	State      IssueState `protobuf:"varint,6,opt,name=state,proto3,enum=githubridge.IssueState" json:"state,omitempty"`
 }
 
 func (x *GithubIssue) Reset() {
@@ -146,6 +147,13 @@ func (x *GithubIssue) GetOpenedDate() int64 {
 		return x.OpenedDate
 	}
 	return 0
+}
+
+func (x *GithubIssue) GetState() IssueState {
+	if x != nil {
+		return x.State
+	}
+	return IssueState_ISSUE_STATE_UNKNOWN
 }
 
 type CreateIssueRequest struct {
@@ -1078,14 +1086,17 @@ var File_githubridge_proto protoreflect.FileDescriptor
 var file_githubridge_proto_rawDesc = []byte{
 	0x0a, 0x11, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x12, 0x0b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65,
-	0x22, 0x7c, 0x0a, 0x0b, 0x47, 0x69, 0x74, 0x68, 0x75, 0x62, 0x49, 0x73, 0x73, 0x75, 0x65, 0x12,
-	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12,
-	0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x75,
-	0x73, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x65, 0x70, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x72, 0x65, 0x70, 0x6f, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x1f, 0x0a,
-	0x0b, 0x6f, 0x70, 0x65, 0x6e, 0x65, 0x64, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x03, 0x52, 0x0a, 0x6f, 0x70, 0x65, 0x6e, 0x65, 0x64, 0x44, 0x61, 0x74, 0x65, 0x22, 0x66,
+	0x22, 0xab, 0x01, 0x0a, 0x0b, 0x47, 0x69, 0x74, 0x68, 0x75, 0x62, 0x49, 0x73, 0x73, 0x75, 0x65,
+	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64,
+	0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x75, 0x73, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x65, 0x70, 0x6f, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x72, 0x65, 0x70, 0x6f, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c,
+	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x1f,
+	0x0a, 0x0b, 0x6f, 0x70, 0x65, 0x6e, 0x65, 0x64, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x0a, 0x6f, 0x70, 0x65, 0x6e, 0x65, 0x64, 0x44, 0x61, 0x74, 0x65, 0x12,
+	0x2d, 0x0a, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x17,
+	0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2e, 0x49, 0x73, 0x73,
+	0x75, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65, 0x52, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x22, 0x66,
 	0x0a, 0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x49, 0x73, 0x73, 0x75, 0x65, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x65, 0x70, 0x6f,
@@ -1244,29 +1255,30 @@ var file_githubridge_proto_goTypes = []interface{}{
 	(*AddLabelResponse)(nil),       // 18: githubridge.AddLabelResponse
 }
 var file_githubridge_proto_depIdxs = []int32{
-	1,  // 0: githubridge.GetIssuesResponse.issues:type_name -> githubridge.GithubIssue
-	13, // 1: githubridge.GetCommentsResponse.comments:type_name -> githubridge.Comment
-	17, // 2: githubridge.GithubridgeService.AddLabel:input_type -> githubridge.AddLabelRequest
-	2,  // 3: githubridge.GithubridgeService.CreateIssue:input_type -> githubridge.CreateIssueRequest
-	4,  // 4: githubridge.GithubridgeService.GetIssue:input_type -> githubridge.GetIssueRequest
-	5,  // 5: githubridge.GithubridgeService.GetIssues:input_type -> githubridge.GetIssuesRequest
-	8,  // 6: githubridge.GithubridgeService.CloseIssue:input_type -> githubridge.CloseIssueRequest
-	10, // 7: githubridge.GithubridgeService.CommentOnIssue:input_type -> githubridge.CommentOnIssueRequest
-	12, // 8: githubridge.GithubridgeService.GetComments:input_type -> githubridge.GetCommentsRequest
-	15, // 9: githubridge.GithubridgeService.GetLabels:input_type -> githubridge.GetLabelsRequest
-	18, // 10: githubridge.GithubridgeService.AddLabel:output_type -> githubridge.AddLabelResponse
-	3,  // 11: githubridge.GithubridgeService.CreateIssue:output_type -> githubridge.CreateIssueResponse
-	7,  // 12: githubridge.GithubridgeService.GetIssue:output_type -> githubridge.GetIssueResponse
-	6,  // 13: githubridge.GithubridgeService.GetIssues:output_type -> githubridge.GetIssuesResponse
-	9,  // 14: githubridge.GithubridgeService.CloseIssue:output_type -> githubridge.CloseIssueResponse
-	11, // 15: githubridge.GithubridgeService.CommentOnIssue:output_type -> githubridge.CommentOnIssueResponse
-	14, // 16: githubridge.GithubridgeService.GetComments:output_type -> githubridge.GetCommentsResponse
-	16, // 17: githubridge.GithubridgeService.GetLabels:output_type -> githubridge.GetLabelsResponse
-	10, // [10:18] is the sub-list for method output_type
-	2,  // [2:10] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	0,  // 0: githubridge.GithubIssue.state:type_name -> githubridge.IssueState
+	1,  // 1: githubridge.GetIssuesResponse.issues:type_name -> githubridge.GithubIssue
+	13, // 2: githubridge.GetCommentsResponse.comments:type_name -> githubridge.Comment
+	17, // 3: githubridge.GithubridgeService.AddLabel:input_type -> githubridge.AddLabelRequest
+	2,  // 4: githubridge.GithubridgeService.CreateIssue:input_type -> githubridge.CreateIssueRequest
+	4,  // 5: githubridge.GithubridgeService.GetIssue:input_type -> githubridge.GetIssueRequest
+	5,  // 6: githubridge.GithubridgeService.GetIssues:input_type -> githubridge.GetIssuesRequest
+	8,  // 7: githubridge.GithubridgeService.CloseIssue:input_type -> githubridge.CloseIssueRequest
+	10, // 8: githubridge.GithubridgeService.CommentOnIssue:input_type -> githubridge.CommentOnIssueRequest
+	12, // 9: githubridge.GithubridgeService.GetComments:input_type -> githubridge.GetCommentsRequest
+	15, // 10: githubridge.GithubridgeService.GetLabels:input_type -> githubridge.GetLabelsRequest
+	18, // 11: githubridge.GithubridgeService.AddLabel:output_type -> githubridge.AddLabelResponse
+	3,  // 12: githubridge.GithubridgeService.CreateIssue:output_type -> githubridge.CreateIssueResponse
+	7,  // 13: githubridge.GithubridgeService.GetIssue:output_type -> githubridge.GetIssueResponse
+	6,  // 14: githubridge.GithubridgeService.GetIssues:output_type -> githubridge.GetIssuesResponse
+	9,  // 15: githubridge.GithubridgeService.CloseIssue:output_type -> githubridge.CloseIssueResponse
+	11, // 16: githubridge.GithubridgeService.CommentOnIssue:output_type -> githubridge.CommentOnIssueResponse
+	14, // 17: githubridge.GithubridgeService.GetComments:output_type -> githubridge.GetCommentsResponse
+	16, // 18: githubridge.GithubridgeService.GetLabels:output_type -> githubridge.GetLabelsResponse
+	11, // [11:19] is the sub-list for method output_type
+	3,  // [3:11] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_githubridge_proto_init() }
