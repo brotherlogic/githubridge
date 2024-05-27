@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 	"github.com/google/go-github/v50/github"
@@ -65,11 +66,12 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		} else if action == "opened" {
 			issueAdds.Inc()
 			s.issues = append(s.issues, &pb.GithubIssue{
-				Repo:  repo,
-				User:  event.Repo.Owner.GetLogin(),
-				Id:    int64(event.Issue.GetNumber()),
-				Title: event.Issue.GetTitle(),
-				State: pb.IssueState_ISSUE_STATE_OPEN,
+				Repo:       repo,
+				User:       event.Repo.Owner.GetLogin(),
+				Id:         int64(event.Issue.GetNumber()),
+				Title:      event.Issue.GetTitle(),
+				State:      pb.IssueState_ISSUE_STATE_OPEN,
+				OpenedDate: time.Now().Unix(),
 			})
 			trackedIssues.Set(float64(len(s.issues)))
 		}
