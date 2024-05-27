@@ -69,6 +69,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 				User:  event.Repo.Owner.GetLogin(),
 				Id:    int64(event.Issue.GetNumber()),
 				Title: event.Issue.GetTitle(),
+				State: pb.IssueState_ISSUE_STATE_OPEN,
 			})
 			trackedIssues.Set(float64(len(s.issues)))
 		}
