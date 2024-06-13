@@ -1081,6 +1081,163 @@ func (*AddLabelResponse) Descriptor() ([]byte, []int) {
 	return file_githubridge_proto_rawDescGZIP(), []int{17}
 }
 
+type Version struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
+	Date    int64  `protobuf:"varint,2,opt,name=date,proto3" json:"date,omitempty"`
+}
+
+func (x *Version) Reset() {
+	*x = Version{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_githubridge_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Version) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Version) ProtoMessage() {}
+
+func (x *Version) ProtoReflect() protoreflect.Message {
+	mi := &file_githubridge_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Version.ProtoReflect.Descriptor instead.
+func (*Version) Descriptor() ([]byte, []int) {
+	return file_githubridge_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *Version) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *Version) GetDate() int64 {
+	if x != nil {
+		return x.Date
+	}
+	return 0
+}
+
+type GetReleasesRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	User string `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Repo string `protobuf:"bytes,2,opt,name=repo,proto3" json:"repo,omitempty"`
+}
+
+func (x *GetReleasesRequest) Reset() {
+	*x = GetReleasesRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_githubridge_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetReleasesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetReleasesRequest) ProtoMessage() {}
+
+func (x *GetReleasesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_githubridge_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetReleasesRequest.ProtoReflect.Descriptor instead.
+func (*GetReleasesRequest) Descriptor() ([]byte, []int) {
+	return file_githubridge_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *GetReleasesRequest) GetUser() string {
+	if x != nil {
+		return x.User
+	}
+	return ""
+}
+
+func (x *GetReleasesRequest) GetRepo() string {
+	if x != nil {
+		return x.Repo
+	}
+	return ""
+}
+
+type GetReleasesResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Versions []*Version `protobuf:"bytes,1,rep,name=versions,proto3" json:"versions,omitempty"`
+}
+
+func (x *GetReleasesResponse) Reset() {
+	*x = GetReleasesResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_githubridge_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetReleasesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetReleasesResponse) ProtoMessage() {}
+
+func (x *GetReleasesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_githubridge_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetReleasesResponse.ProtoReflect.Descriptor instead.
+func (*GetReleasesResponse) Descriptor() ([]byte, []int) {
+	return file_githubridge_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetReleasesResponse) GetVersions() []*Version {
+	if x != nil {
+		return x.Versions
+	}
+	return nil
+}
+
 var File_githubridge_proto protoreflect.FileDescriptor
 
 var file_githubridge_proto_rawDesc = []byte{
@@ -1166,13 +1323,25 @@ var file_githubridge_proto_rawDesc = []byte{
 	0x72, 0x65, 0x70, 0x6f, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05,
 	0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x18, 0x04, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x22, 0x12, 0x0a, 0x10, 0x41, 0x64,
-	0x64, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2a, 0x53,
+	0x64, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x37,
+	0x0a, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x76, 0x65, 0x72,
+	0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x76, 0x65, 0x72, 0x73,
+	0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x04, 0x64, 0x61, 0x74, 0x65, 0x22, 0x3c, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x52, 0x65,
+	0x6c, 0x65, 0x61, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a,
+	0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x75, 0x73, 0x65,
+	0x72, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x65, 0x70, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x72, 0x65, 0x70, 0x6f, 0x22, 0x47, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x52, 0x65, 0x6c, 0x65,
+	0x61, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x30, 0x0a, 0x08,
+	0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x14,
+	0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2e, 0x56, 0x65, 0x72,
+	0x73, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x2a, 0x53,
 	0x0a, 0x0a, 0x49, 0x73, 0x73, 0x75, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x17, 0x0a, 0x13,
 	0x49, 0x53, 0x53, 0x55, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x55, 0x4e, 0x4b, 0x4e,
 	0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x14, 0x0a, 0x10, 0x49, 0x53, 0x53, 0x55, 0x45, 0x5f, 0x53,
 	0x54, 0x41, 0x54, 0x45, 0x5f, 0x4f, 0x50, 0x45, 0x4e, 0x10, 0x01, 0x12, 0x16, 0x0a, 0x12, 0x49,
 	0x53, 0x53, 0x55, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x43, 0x4c, 0x4f, 0x53, 0x45,
-	0x44, 0x10, 0x02, 0x32, 0x8c, 0x05, 0x0a, 0x12, 0x47, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69,
+	0x44, 0x10, 0x02, 0x32, 0xde, 0x05, 0x0a, 0x12, 0x47, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69,
 	0x64, 0x67, 0x65, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x47, 0x0a, 0x08, 0x41, 0x64,
 	0x64, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x12, 0x1c, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72,
 	0x69, 0x64, 0x67, 0x65, 0x2e, 0x41, 0x64, 0x64, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x52, 0x65, 0x71,
@@ -1213,10 +1382,15 @@ var file_githubridge_proto_rawDesc = []byte{
 	0x65, 0x2e, 0x47, 0x65, 0x74, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65,
 	0x2e, 0x47, 0x65, 0x74, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x42, 0x2b, 0x5a, 0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x62, 0x72, 0x6f, 0x74, 0x68, 0x65, 0x72, 0x6c, 0x6f, 0x67, 0x69, 0x63, 0x2f, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x65, 0x12, 0x50, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65,
+	0x73, 0x12, 0x1f, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2e,
+	0x47, 0x65, 0x74, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x20, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65,
+	0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x42, 0x2b, 0x5a, 0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
+	0x6f, 0x6d, 0x2f, 0x62, 0x72, 0x6f, 0x74, 0x68, 0x65, 0x72, 0x6c, 0x6f, 0x67, 0x69, 0x63, 0x2f,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1232,7 +1406,7 @@ func file_githubridge_proto_rawDescGZIP() []byte {
 }
 
 var file_githubridge_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_githubridge_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_githubridge_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_githubridge_proto_goTypes = []interface{}{
 	(IssueState)(0),                // 0: githubridge.IssueState
 	(*GithubIssue)(nil),            // 1: githubridge.GithubIssue
@@ -1253,32 +1427,38 @@ var file_githubridge_proto_goTypes = []interface{}{
 	(*GetLabelsResponse)(nil),      // 16: githubridge.GetLabelsResponse
 	(*AddLabelRequest)(nil),        // 17: githubridge.AddLabelRequest
 	(*AddLabelResponse)(nil),       // 18: githubridge.AddLabelResponse
+	(*Version)(nil),                // 19: githubridge.Version
+	(*GetReleasesRequest)(nil),     // 20: githubridge.GetReleasesRequest
+	(*GetReleasesResponse)(nil),    // 21: githubridge.GetReleasesResponse
 }
 var file_githubridge_proto_depIdxs = []int32{
 	0,  // 0: githubridge.GithubIssue.state:type_name -> githubridge.IssueState
 	1,  // 1: githubridge.GetIssuesResponse.issues:type_name -> githubridge.GithubIssue
 	13, // 2: githubridge.GetCommentsResponse.comments:type_name -> githubridge.Comment
-	17, // 3: githubridge.GithubridgeService.AddLabel:input_type -> githubridge.AddLabelRequest
-	2,  // 4: githubridge.GithubridgeService.CreateIssue:input_type -> githubridge.CreateIssueRequest
-	4,  // 5: githubridge.GithubridgeService.GetIssue:input_type -> githubridge.GetIssueRequest
-	5,  // 6: githubridge.GithubridgeService.GetIssues:input_type -> githubridge.GetIssuesRequest
-	8,  // 7: githubridge.GithubridgeService.CloseIssue:input_type -> githubridge.CloseIssueRequest
-	10, // 8: githubridge.GithubridgeService.CommentOnIssue:input_type -> githubridge.CommentOnIssueRequest
-	12, // 9: githubridge.GithubridgeService.GetComments:input_type -> githubridge.GetCommentsRequest
-	15, // 10: githubridge.GithubridgeService.GetLabels:input_type -> githubridge.GetLabelsRequest
-	18, // 11: githubridge.GithubridgeService.AddLabel:output_type -> githubridge.AddLabelResponse
-	3,  // 12: githubridge.GithubridgeService.CreateIssue:output_type -> githubridge.CreateIssueResponse
-	7,  // 13: githubridge.GithubridgeService.GetIssue:output_type -> githubridge.GetIssueResponse
-	6,  // 14: githubridge.GithubridgeService.GetIssues:output_type -> githubridge.GetIssuesResponse
-	9,  // 15: githubridge.GithubridgeService.CloseIssue:output_type -> githubridge.CloseIssueResponse
-	11, // 16: githubridge.GithubridgeService.CommentOnIssue:output_type -> githubridge.CommentOnIssueResponse
-	14, // 17: githubridge.GithubridgeService.GetComments:output_type -> githubridge.GetCommentsResponse
-	16, // 18: githubridge.GithubridgeService.GetLabels:output_type -> githubridge.GetLabelsResponse
-	11, // [11:19] is the sub-list for method output_type
-	3,  // [3:11] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	19, // 3: githubridge.GetReleasesResponse.versions:type_name -> githubridge.Version
+	17, // 4: githubridge.GithubridgeService.AddLabel:input_type -> githubridge.AddLabelRequest
+	2,  // 5: githubridge.GithubridgeService.CreateIssue:input_type -> githubridge.CreateIssueRequest
+	4,  // 6: githubridge.GithubridgeService.GetIssue:input_type -> githubridge.GetIssueRequest
+	5,  // 7: githubridge.GithubridgeService.GetIssues:input_type -> githubridge.GetIssuesRequest
+	8,  // 8: githubridge.GithubridgeService.CloseIssue:input_type -> githubridge.CloseIssueRequest
+	10, // 9: githubridge.GithubridgeService.CommentOnIssue:input_type -> githubridge.CommentOnIssueRequest
+	12, // 10: githubridge.GithubridgeService.GetComments:input_type -> githubridge.GetCommentsRequest
+	15, // 11: githubridge.GithubridgeService.GetLabels:input_type -> githubridge.GetLabelsRequest
+	20, // 12: githubridge.GithubridgeService.GetReleases:input_type -> githubridge.GetReleasesRequest
+	18, // 13: githubridge.GithubridgeService.AddLabel:output_type -> githubridge.AddLabelResponse
+	3,  // 14: githubridge.GithubridgeService.CreateIssue:output_type -> githubridge.CreateIssueResponse
+	7,  // 15: githubridge.GithubridgeService.GetIssue:output_type -> githubridge.GetIssueResponse
+	6,  // 16: githubridge.GithubridgeService.GetIssues:output_type -> githubridge.GetIssuesResponse
+	9,  // 17: githubridge.GithubridgeService.CloseIssue:output_type -> githubridge.CloseIssueResponse
+	11, // 18: githubridge.GithubridgeService.CommentOnIssue:output_type -> githubridge.CommentOnIssueResponse
+	14, // 19: githubridge.GithubridgeService.GetComments:output_type -> githubridge.GetCommentsResponse
+	16, // 20: githubridge.GithubridgeService.GetLabels:output_type -> githubridge.GetLabelsResponse
+	21, // 21: githubridge.GithubridgeService.GetReleases:output_type -> githubridge.GetReleasesResponse
+	13, // [13:22] is the sub-list for method output_type
+	4,  // [4:13] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_githubridge_proto_init() }
@@ -1503,6 +1683,42 @@ func file_githubridge_proto_init() {
 				return nil
 			}
 		}
+		file_githubridge_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Version); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_githubridge_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetReleasesRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_githubridge_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetReleasesResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1510,7 +1726,7 @@ func file_githubridge_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_githubridge_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   18,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

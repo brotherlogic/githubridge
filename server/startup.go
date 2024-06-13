@@ -36,7 +36,6 @@ func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 		issueState = pb.IssueState_ISSUE_STATE_OPEN
 	case "closed":
 		issueState = pb.IssueState_ISSUE_STATE_CLOSED
-
 	}
 
 	return &pb.GithubIssue{

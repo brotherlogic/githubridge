@@ -101,6 +101,19 @@ message AddLabelRequest {
 
 message AddLabelResponse {}
 
+
+message Version {
+    string version = 1;
+    int64 date = 2;
+}
+message GetReleasesRequest {
+    string user = 1;
+    string repo = 2;
+}
+message GetReleasesResponse {
+    repeated Version versions = 1;
+}
+
 service GithubridgeService {
     rpc AddLabel(AddLabelRequest) returns (AddLabelResponse);
     rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
@@ -110,4 +123,5 @@ service GithubridgeService {
     rpc CommentOnIssue(CommentOnIssueRequest) returns (CommentOnIssueResponse);
     rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
     rpc GetLabels(GetLabelsRequest) returns (GetLabelsResponse);
+    rpc GetReleases(GetReleasesRequest) returns (GetReleasesResponse);
 }
