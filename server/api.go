@@ -25,7 +25,7 @@ var (
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
 	// Fail if an issue is open with that name
 	for _, issue := range s.issues {
-		if issue.GetTitle() == req.GetTitle() {
+		if issue.GetTitle() == req.GetTitle() && issue.GetState() == pb.IssueState_ISSUE_STATE_OPEN {
 			log.Printf("Returning error with issue: %v", issue)
 			return &pb.CreateIssueResponse{IssueId: issue.GetId(), AlreadyExistingIssue: true}, nil
 		}

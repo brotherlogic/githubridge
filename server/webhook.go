@@ -78,4 +78,6 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
 	}
+
+	log.Printf(" -> %v", len(s.issues))
 }
