@@ -25,3 +25,8 @@ func (s *Server) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.Add
 	_, _, err := s.client.Issues.AddLabelsToIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), []string{req.GetLabel()})
 	return &pb.AddLabelResponse{}, err
 }
+
+func (s *Server) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {
+	_, err := s.client.Issues.RemoveLabelForIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), req.GetLabel())
+	return &pb.DeleteLabelResponse{}, err
+}

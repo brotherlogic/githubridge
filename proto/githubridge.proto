@@ -101,6 +101,15 @@ message AddLabelRequest {
 
 message AddLabelResponse {}
 
+message DeleteLabelRequest {
+    string user = 1;
+    string repo = 2;
+    int32 id = 3;
+    string label = 4;
+}
+
+message DeleteLabelResponse {}
+
 
 message Version {
     string version = 1;
@@ -116,6 +125,7 @@ message GetReleasesResponse {
 
 service GithubridgeService {
     rpc AddLabel(AddLabelRequest) returns (AddLabelResponse);
+    rpc DeleteLabel(DeleteLabelRequest) returns (DeleteLabelResponse);
     rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
     rpc GetIssue(GetIssueRequest) returns (GetIssueResponse);
     rpc GetIssues(GetIssuesRequest) returns (GetIssuesResponse);
