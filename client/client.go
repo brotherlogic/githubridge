@@ -17,6 +17,7 @@ type GithubridgeClient interface {
 	GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error)
 	GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error)
 	AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error)
+	DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error)
 }
 
 type rClient struct {
@@ -69,4 +70,8 @@ func (c *rClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.
 func (c *rClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
 	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
 	return c.gClient.GetIssues(nctx, req)
+}
+func (c *rClient) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.DeleteLabel(nctx, req)
 }
