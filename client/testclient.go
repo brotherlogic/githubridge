@@ -59,3 +59,9 @@ func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*
 func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
 	return &pb.GetIssuesResponse{Issues: c.issues}, nil
 }
+
+func (c *TestClient) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {
+	label := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
+	delete(c.labels, label)
+	return &pb.DeleteLabelResponse{}, nil
+}
