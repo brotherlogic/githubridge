@@ -5,8 +5,6 @@ import (
 
 	pb "github.com/brotherlogic/githubridge/proto"
 	"github.com/google/go-github/v50/github"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (s *Server) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
@@ -24,5 +22,6 @@ func (s *Server) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.G
 }
 
 func (s *Server) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
-	return &pb.AddLabelResponse{}, status.Errorf(codes.Unimplemented, "Not written yet")
+	_, _, err := s.client.Issues.AddLabelsToIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), []string{req.GetLabel()})
+	return &pb.AddLabelResponse{}, err
 }
