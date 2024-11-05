@@ -44,7 +44,7 @@ func main() {
 			log.Fatalf("Unable to drain queue: %v", err)
 		}
 		for _, issue := range resp.GetIssues() {
-			fmt.Printf("%v - %v / %v %v\n", issue.GetTitle(), issue.GetUser(), issue.GetRepo(), issue.GetId())
+			fmt.Printf("%v - %v / %v %v -> %v\n", issue.GetTitle(), issue.GetUser(), issue.GetRepo(), issue.GetId(), issue)
 		}
 	case "close":
 		closeSet := flag.NewFlagSet("close", flag.ExitOnError)
