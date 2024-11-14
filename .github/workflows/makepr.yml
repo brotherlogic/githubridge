@@ -2,6 +2,9 @@ name: Create production promotion pull request
 on:
   push:
 
+permissions:
+  pull-requests: write
+
 jobs:
  pull-request:
     runs-on: ubuntu-latest
