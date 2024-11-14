@@ -161,5 +161,6 @@ func (s *Server) startup(ctx context.Context) error {
 	for repo, count := range issueMap {
 		trackedIssues.With(prometheus.Labels{"repo": repo}).Set(count)
 	}
+
 	return nil
 }
