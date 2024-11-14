@@ -19,7 +19,7 @@ var (
 	creates = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "githubridge_creates",
 		Help: "The number of repos being tracked",
-	}, []string{"repo"})
+	}, []string{"repo", "code"})
 )
 
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
@@ -37,8 +37,11 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 	})
 	processResponse(resp)
 	if err != nil {
+		creates.With(prometheus.Labels{"repo": req.GetRepo(), "code": fmt.Sprintf("%v", status.Code(err))}).Inc()
 		return nil, err
 	}
+
+	creates.With(prometheus.Labels{"repo": req.GetRepo(), "code": fmt.Sprintf("%v", resp.StatusCode)}).Inc()
 	if resp.StatusCode != 201 {
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
