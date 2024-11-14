@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: pull-request
-      uses: repo-sync/pull-request@v2
+      uses: repo-sync/pull-request@v3
       with:
         destination_branch: "main"
         github_token: ${{ secrets.PERSONAL_TOKEN }}
