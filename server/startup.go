@@ -19,10 +19,10 @@ var (
 		Help: "The number of repos being tracked",
 	})
 
-	trackedIssues = promauto.NewGauge(prometheus.GaugeOpts{
+	trackedIssues = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "githubridge_tracked_issues",
 		Help: "The number of issues being tracked",
-	})
+	}, []string{"repo"})
 
 	callback = "http://ghwebhook.brotherlogic-backend.com/"
 )
@@ -153,7 +153,13 @@ func (s *Server) startup(ctx context.Context) error {
 		}
 	}
 
-	trackedIssues.Set(float64(len(s.issues)))
-
+	issueMap := make(map[string]float64)
+	for _, issue := range s.issues {
+		issueMap[issue.GetRepo()]++
+	}
+	trackedIssues.Reset()
+	for repo, count := range issueMap {
+		trackedIssues.With(prometheus.Labels{"repo": repo}).Set(count)
+	}
 	return nil
 }
