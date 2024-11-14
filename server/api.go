@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	creates = promauto.NewGaugeVec(prometheus.GaugeOpts{
+	creates = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "githubridge_creates",
 		Help: "The number of repos being tracked",
 	}, []string{"repo", "code"})
