@@ -9,9 +9,8 @@ jobs:
  pull-request:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: pull-request
-      run: |
-        gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
-      env:
-        GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN}}
