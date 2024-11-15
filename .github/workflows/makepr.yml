@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create pull request
-        uses: devops-infra/action-pull-request@v0.5.5
-        with:
-          github_token: ${{ secrets.PERSONAL_TOKEN }}
-          title: Automatic pull request
+      - name: pull-request
+      run: |
+        gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
+      env:
+        GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
