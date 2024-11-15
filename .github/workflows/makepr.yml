@@ -14,4 +14,4 @@ jobs:
       run: |
         gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
       env:
-        GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
