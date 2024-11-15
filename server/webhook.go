@@ -62,7 +62,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 			s.issues = nissues
 			log.Printf("CLOSE: %v", len(s.issues))
-			trackedIssues.Set(float64(len(s.issues)))
+			s.metrics()
 		} else if action == "opened" {
 			issueAdds.Inc()
 			s.issues = append(s.issues, &pb.GithubIssue{
@@ -73,7 +73,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 				State:      pb.IssueState_ISSUE_STATE_OPEN,
 				OpenedDate: time.Now().Unix(),
 			})
-			trackedIssues.Set(float64(len(s.issues)))
+			s.metrics()
 		}
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)

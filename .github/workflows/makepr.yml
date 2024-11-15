@@ -2,13 +2,16 @@ name: Create production promotion pull request
 on:
   push:
 
+permissions:
+  pull-requests: write
+
 jobs:
  pull-request:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: pull-request
-      uses: repo-sync/pull-request@v2
-      with:
-        destination_branch: "main"
-        github_token: ${{ secrets.PERSONAL_TOKEN }}
+      run: |
+        gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
+      env:
+        GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
