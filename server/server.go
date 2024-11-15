@@ -46,7 +46,7 @@ func NewServer(client *github.Client, user string) *Server {
 	s := &Server{client: client, user: user, ready: true}
 	err := s.startup(context.Background())
 	if err != nil {
-		log.Printf("Failed startup: %v", err)
+		log.Printf("Failed to startup: %v", err)
 		os.Exit(1)
 	}
 
