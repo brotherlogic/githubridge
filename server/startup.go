@@ -153,6 +153,10 @@ func (s *Server) startup(ctx context.Context) error {
 		}
 	}
 
+	return nil
+}
+
+func (s *Server) metrics() {
 	issueMap := make(map[string]float64)
 	for _, issue := range s.issues {
 		issueMap[issue.GetRepo()]++
@@ -161,6 +165,4 @@ func (s *Server) startup(ctx context.Context) error {
 	for repo, count := range issueMap {
 		trackedIssues.With(prometheus.Labels{"repo": repo}).Set(count)
 	}
-
-	return nil
 }
