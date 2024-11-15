@@ -46,7 +46,6 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
 
-	creates.With(prometheus.Labels{"repo": req.GetRepo()}).Inc()
 	return &pb.CreateIssueResponse{IssueId: (int64(issue.GetNumber()))}, nil
 }
 
