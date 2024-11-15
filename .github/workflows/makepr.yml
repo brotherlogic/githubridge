@@ -5,9 +5,6 @@ on:
 permissions:
   pull-requests: write
 
-env:
-  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-
 jobs:
  pull-request:
     runs-on: ubuntu-latest
@@ -16,3 +13,5 @@ jobs:
     - name: pull-request
       run: |
         gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
