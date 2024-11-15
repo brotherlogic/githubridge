@@ -5,6 +5,9 @@ on:
 permissions:
   pull-requests: write
 
+env:
+  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
 jobs:
  pull-request:
     runs-on: ubuntu-latest
