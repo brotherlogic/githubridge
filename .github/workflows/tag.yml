@@ -19,4 +19,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
           WITH_V: true
-          VERBOSE: true

@@ -12,12 +12,14 @@ func (s *Server) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.G
 	if err != nil {
 		return nil, err
 	}
+
 	processResponse(gr)
 
 	var labels []string
 	for _, label := range r {
 		labels = append(labels, label.GetName())
 	}
+
 	return &pb.GetLabelsResponse{Labels: labels}, nil
 }
 
