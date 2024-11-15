@@ -51,6 +51,7 @@ func NewServer(client *github.Client, user string) *Server {
 	}
 
 	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
+	log.Printf("Loaded with %v", s.authKey)
 
 	s.ready = true
 	return s
