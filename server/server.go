@@ -44,14 +44,15 @@ type Server struct {
 
 func NewServer(client *github.Client, user string) *Server {
 	s := &Server{client: client, user: user, ready: true}
+
+	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
+	log.Printf("Loaded with %v", s.authKey)
+
 	err := s.startup(context.Background())
 	if err != nil {
 		log.Printf("Failed to startup: %v", err)
 		os.Exit(1)
 	}
-
-	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
-	log.Printf("Loaded with %v", s.authKey)
 
 	s.ready = true
 	return s
