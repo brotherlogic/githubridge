@@ -13,8 +13,9 @@ import (
 
 func convertComment(comment *github.IssueComment) *pb.Comment {
 	return &pb.Comment{
-		Number: int32(*comment.ID),
-		Text:   comment.GetBody(),
+		Number:    int32(*comment.ID),
+		Text:      comment.GetBody(),
+		Timestamp: comment.CreatedAt.Unix(),
 	}
 }
 
