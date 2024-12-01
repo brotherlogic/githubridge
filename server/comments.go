@@ -28,7 +28,7 @@ func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*
 	}
 
 	if ghr.LastPage != 1 {
-		return nil, status.Errorf(codes.FailedPrecondition, "There are more comments than we're returning (%v)", req)
+		return nil, status.Errorf(codes.FailedPrecondition, "There are more comments than we're returning (%v)  -> %v", req, ghr)
 	}
 
 	var comments []*pb.Comment
