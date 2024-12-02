@@ -50,9 +50,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("mdb is unable to listen on the internal grpc port %v: %v", *port, err)
 	}
-	gsInt := grpc.NewServer()
+	gsInt := grpc.NewServer(grpc.ChainUnaryInterceptor(
+		s.ServerInterceptor,
+	))
 	pb.RegisterGithubridgeServiceServer(gsInt, s)
-	
+
 	go func() {
 		err := gsInt.Serve(lisInt)
 		log.Fatalf("mdb is unable to sever grpc internally: %v", err)
@@ -62,7 +64,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("gramophile is unable to listen on the grpc port %v: %v", *port, err)
 	}
-	gs := grpc.NewServer(grpc.UnaryInterceptor(s.AuthCall))
+	gs := grpc.NewServer(
+		grpc.UnaryInterceptor(s.AuthCall), grpc.ChainUnaryInterceptor(s.ServerInterceptor))
 	pb.RegisterGithubridgeServiceServer(gs, s)
 
 	log.Printf("Serving on port :%d", *port)
