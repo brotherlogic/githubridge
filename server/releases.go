@@ -14,6 +14,7 @@ func (s *Server) GetReleases(ctx context.Context, req *pb.GetReleasesRequest) (*
 	if err != nil {
 		return nil, err
 	}
+	processResponse(ghr)
 
 	if ghr.LastPage != 1 {
 		return nil, status.Errorf(codes.FailedPrecondition, "There are more comments than we're returning (%v)", req)

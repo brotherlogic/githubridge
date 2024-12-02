@@ -12,7 +12,6 @@ func (s *Server) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.G
 	if err != nil {
 		return nil, err
 	}
-
 	processResponse(gr)
 
 	var labels []string
@@ -24,11 +23,13 @@ func (s *Server) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.G
 }
 
 func (s *Server) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
-	_, _, err := s.client.Issues.AddLabelsToIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), []string{req.GetLabel()})
+	_, gr, err := s.client.Issues.AddLabelsToIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), []string{req.GetLabel()})
+	processResponse(gr)
 	return &pb.AddLabelResponse{}, err
 }
 
 func (s *Server) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {
-	_, err := s.client.Issues.RemoveLabelForIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), req.GetLabel())
+	gr, err := s.client.Issues.RemoveLabelForIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), req.GetLabel())
+	processResponse(gr)
 	return &pb.DeleteLabelResponse{}, err
 }
