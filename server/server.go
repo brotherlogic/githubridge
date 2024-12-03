@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"time"
 
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
@@ -33,6 +34,11 @@ func processResponse(resp *github.Response) {
 	quotaResetTime.Set(float64(resp.Rate.Reset.UnixMilli()))
 }
 
+type CommentCache struct {
+	Comments []*pb.Comment
+	Cached   time.Time
+}
+
 type Server struct {
 	client  *github.Client
 	repos   []string
@@ -40,6 +46,8 @@ type Server struct {
 	issues  []*pb.GithubIssue
 	ready   bool // ready to server
 	authKey string
+
+	comments map[string]*CommentCache
 }
 
 func NewServer(client *github.Client, user string) *Server {
