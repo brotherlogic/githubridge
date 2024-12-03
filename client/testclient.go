@@ -8,16 +8,18 @@ import (
 )
 
 type TestClient struct {
-	counter int64
-	issues  []*pb.GithubIssue
-	labels  map[string][]string
+	counter  int64
+	issues   []*pb.GithubIssue
+	labels   map[string][]string
+	comments map[string][]*pb.Comment
 }
 
 func GetTestClient() GithubridgeClient {
 	return &TestClient{
-		issues:  []*pb.GithubIssue{},
-		counter: 0,
-		labels:  make(map[string][]string),
+		issues:   []*pb.GithubIssue{},
+		counter:  0,
+		labels:   make(map[string][]string),
+		comments: make(map[string][]*pb.Comment),
 	}
 }
 
@@ -58,6 +60,10 @@ func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*
 
 func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*pb.GetIssuesResponse, error) {
 	return &pb.GetIssuesResponse{Issues: c.issues}, nil
+}
+
+func (c *TestClient) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*pb.GetCommentsResponse, error) {
+	return &pb.GetCommentsResponse{Comments: c.comments[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
 }
 
 func (c *TestClient) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {

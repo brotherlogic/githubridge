@@ -8,6 +8,7 @@ import (
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -20,7 +21,21 @@ var (
 		Name: "githubridge_creates",
 		Help: "The number of repos being tracked",
 	}, []string{"repo", "code"})
+
+	serverRequests = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "githubridge_requests",
+		Help: "The number of server requests",
+	}, []string{"method", "status"})
 )
+
+func (s *Server) ServerInterceptor(ctx context.Context,
+	req interface{},
+	info *grpc.UnaryServerInfo,
+	handler grpc.UnaryHandler) (interface{}, error) {
+	h, err := handler(ctx, req)
+	serverRequests.With(prometheus.Labels{"status": status.Convert(err).Code().String(), "method": info.FullMethod}).Inc()
+	return h, err
+}
 
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
 	// Fail if an issue is open with that name
@@ -46,7 +61,6 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
 
-	creates.With(prometheus.Labels{"repo": req.GetRepo()}).Inc()
 	return &pb.CreateIssueResponse{IssueId: (int64(issue.GetNumber()))}, nil
 }
 

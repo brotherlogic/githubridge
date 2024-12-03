@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -15,8 +16,9 @@ import (
 
 func convertComment(comment *github.IssueComment) *pb.Comment {
 	return &pb.Comment{
-		Number: int32(*comment.ID),
-		Text:   comment.GetBody(),
+		Number:    int32(*comment.ID),
+		Text:      comment.GetBody(),
+		Timestamp: comment.CreatedAt.Unix(),
 	}
 }
 
@@ -39,8 +41,11 @@ func (s *Server) insertCommentsIntoCache(ctx context.Context, req *pb.GetComment
 }
 
 func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*pb.GetCommentsResponse, error) {
+	log.Printf("GetComments %v", req)
+
 	ccomments, err := s.getFromCommentCache(ctx, req)
 	if err == nil {
+		log.Printf("Serving from cache")
 		return &pb.GetCommentsResponse{Comments: ccomments}, nil
 	}
 
@@ -51,8 +56,8 @@ func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*
 		return nil, err
 	}
 
-	if ghr.LastPage != 1 {
-		return nil, status.Errorf(codes.FailedPrecondition, "There are more comments than we're returning (%v)", req)
+	if ghr.LastPage > 1 {
+		return nil, status.Errorf(codes.FailedPrecondition, "There are more comments than we're returning (%v)  -> %+v", req, ghr)
 	}
 
 	var comments []*pb.Comment
