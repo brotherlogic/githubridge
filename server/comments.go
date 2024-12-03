@@ -8,6 +8,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/google/go-github/v50/github"
 
@@ -66,4 +67,20 @@ func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*
 	}
 	s.insertCommentsIntoCache(ctx, req, comments)
 	return &pb.GetCommentsResponse{Comments: comments}, nil
+}
+
+func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error) {
+	_, resp, err := s.client.Issues.CreateComment(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueComment{
+		Body: proto.String(req.GetComment()),
+	})
+	processResponse(resp)
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 201 {
+		return nil, fmt.Errorf("bad response code for comment: %v", resp.StatusCode)
+	}
+
+	return &pb.CommentOnIssueResponse{}, nil
 }

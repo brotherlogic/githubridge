@@ -81,22 +81,6 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 	return &pb.CloseIssueResponse{}, nil
 }
 
-func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueRequest) (*pb.CommentOnIssueResponse, error) {
-	_, resp, err := s.client.Issues.CreateComment(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueComment{
-		Body: proto.String(req.GetComment()),
-	})
-	processResponse(resp)
-
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != 201 {
-		return nil, fmt.Errorf("bad response code for comment: %v", resp.StatusCode)
-	}
-
-	return &pb.CommentOnIssueResponse{}, nil
-}
-
 func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
 	issue, resp, err := s.client.Issues.Get(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()))
 	processResponse(resp)
