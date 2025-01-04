@@ -132,20 +132,34 @@ func (s *Server) startup(ctx context.Context) error {
 			return err
 		}
 
+		events := []string{"issues", "comments"}
+
 		found := false
+		foundAllEvents := true
 		for _, h := range hooks {
 			if h.Config["url"] == callback {
+				for _, event := range events {
+					foundEvent := false
+					for _, ex := range h.Events {
+						if ex == event {
+							foundEvent = true
+						}
+					}
+					if !foundEvent {
+						foundAllEvents = false
+					}
+				}
 				found = true
 			} else {
 				log.Printf("Found %v", h.Config["url"])
 			}
 		}
 
-		if !found {
+		if !found || !foundAllEvents {
 			log.Printf("Add to %v", repo)
 			hook := &github.Hook{
 				Active: proto.Bool(true),
-				Events: []string{"issues"},
+				Events: events,
 				Config: map[string]interface{}{"url": callback},
 			}
 			a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, hook)
