@@ -162,8 +162,13 @@ func (s *Server) startup(ctx context.Context) error {
 				Events: events,
 				Config: map[string]interface{}{"url": callback},
 			}
-			a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, hook)
-			log.Printf("HERE: %v, %v, %v from %v", a, b, c, hook)
+			if !found {
+				a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, hook)
+				log.Printf("HERE: %v, %v, %v from %v", a, b, c, hook)
+			} else {
+				a, b, c := s.client.Repositories.EditHook(ctx, s.user, repo, hook.GetID(), hook)
+				log.Printf("HERE: %v, %v, %v from %v", a, b, c, hook)
+			}
 		}
 	}
 
