@@ -136,8 +136,10 @@ func (s *Server) startup(ctx context.Context) error {
 
 		found := false
 		foundAllEvents := true
+		hid := int64(0)
 		for _, h := range hooks {
 			if h.Config["url"] == callback {
+				hid = h.GetID()
 				for _, event := range events {
 					foundEvent := false
 					for _, ex := range h.Events {
@@ -166,7 +168,7 @@ func (s *Server) startup(ctx context.Context) error {
 				a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, hook)
 				log.Printf("HERE: %v, %v, %v from %v", a, b, c, hook)
 			} else {
-				a, b, c := s.client.Repositories.EditHook(ctx, s.user, repo, hook.GetID(), hook)
+				a, b, c := s.client.Repositories.EditHook(ctx, s.user, repo, hid, hook)
 				log.Printf("HERE: %v, %v, %v from %v", a, b, c, hook)
 			}
 		}
