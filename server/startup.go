@@ -132,7 +132,7 @@ func (s *Server) startup(ctx context.Context) error {
 			return err
 		}
 
-		events := []string{"issues", "comments"}
+		events := []string{"issues", "issue_comment"}
 
 		found := false
 		foundAllEvents := true
