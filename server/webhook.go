@@ -75,6 +75,14 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 			})
 			s.metrics()
 		}
+	case *github.IssueCommentEvent:
+		user := event.GetRepo().GetOwner().GetLogin()
+		repo := event.GetRepo().GetName()
+		isid := event.GetIssue().GetID()
+
+		// Invalidate the cache
+		key := fmt.Sprintf("%v-%v-%v", user, repo, isid)
+		delete(s.comments, key)
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
 	}
