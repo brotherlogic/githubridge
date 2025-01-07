@@ -124,6 +124,14 @@ message GetReleasesResponse {
     repeated Version versions = 1;
 }
 
+message GetReposRequest {
+    string user = 1;
+}
+
+message GetReposResponse {
+    repeated string repos = 1;
+}
+
 service GithubridgeService {
     rpc AddLabel(AddLabelRequest) returns (AddLabelResponse);
     rpc DeleteLabel(DeleteLabelRequest) returns (DeleteLabelResponse);
@@ -135,4 +143,5 @@ service GithubridgeService {
     rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
     rpc GetLabels(GetLabelsRequest) returns (GetLabelsResponse);
     rpc GetReleases(GetReleasesRequest) returns (GetReleasesResponse);
+    rpc GetRepos(GetReposRequest) returns (GetReposResponse);
 }
