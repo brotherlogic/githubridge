@@ -158,7 +158,7 @@ func (s *Server) startup(ctx context.Context) error {
 		}
 
 		if !found || !foundAllEvents {
-			log.Printf("Add to %v", repo)
+			log.Printf("Add to %v %v", hid, repo)
 			hook := &github.Hook{
 				Active: proto.Bool(true),
 				Events: events,
