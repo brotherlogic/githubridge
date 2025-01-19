@@ -38,6 +38,11 @@ func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 		issueState = pb.IssueState_ISSUE_STATE_CLOSED
 	}
 
+	var labels []string
+	for _, label := range issue.Labels {
+		labels = append(labels, label.GetName())
+	}
+
 	return &pb.GithubIssue{
 		Id:         int64(issue.GetNumber()),
 		Repo:       repo,
@@ -45,6 +50,7 @@ func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 		Title:      issue.GetTitle(),
 		OpenedDate: issue.GetCreatedAt().Unix(),
 		State:      issueState,
+		Labels:     labels,
 	}
 }
 

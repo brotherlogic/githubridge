@@ -11,6 +11,7 @@ message GithubIssue {
     string title = 4;
     int64 opened_date = 5;
     IssueState state = 6;
+    repeated string labels = 7;
 }
 
 enum IssueState {
@@ -48,6 +49,7 @@ message GetIssuesResponse {
 message GetIssueResponse {
     string state = 1;
     int32 comments = 2;
+    repeated string labels = 3;
 }
 
 message CloseIssueRequest {

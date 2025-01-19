@@ -96,9 +96,16 @@ func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.Get
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
+
+	var labels []string
+	for _, label := range issue.Labels {
+		labels = append(labels, label.GetName())
+	}
+
 	return &pb.GetIssueResponse{
 		State:    issue.GetState(),
 		Comments: int32(issue.GetComments()),
+		Labels:   labels,
 	}, nil
 }
 
