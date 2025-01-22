@@ -13,7 +13,7 @@ func (s *Server) ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.L
 	if path == "" {
 		path = "/"
 	}
-	_, content, ghr, err := s.client.Repositories.GetContents(ctx, req.GetUser(), req.GetRepo(), &github.RepositoryContentGetOptions{})
+	_, content, ghr, err := s.client.Repositories.GetContents(ctx, req.GetUser(), req.GetRepo(), path, &github.RepositoryContentGetOptions{})
 
 	processResponse(ghr)
 
