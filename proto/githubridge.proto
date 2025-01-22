@@ -150,7 +150,7 @@ message ListFilesRequest {
 }
 
 message ListFilesResponse {
-    repeated string file = 1;
+    repeated string files = 1;
 }
 
 service GithubridgeService {

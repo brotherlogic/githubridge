@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	pb "github.com/brotherlogic/grambridge/proto"
+	pb "github.com/brotherlogic/githubridge/proto"
 
 	"github.com/google/go-github/v50/github"
 )
@@ -13,7 +13,7 @@ func (s *Server) ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.L
 	if path == "" {
 		path = "/"
 	}
-	_, content, ghr, err := s.client.Repositories.GetContents(ctx, req.GetUser(), req.GetOwner(), &github.RepositoryContentGetOptions{})
+	_, content, ghr, err := s.client.Repositories.GetContents(ctx, req.GetUser(), req.GetRepo(), &github.RepositoryContentGetOptions{})
 
 	processResponse(ghr)
 
