@@ -58,6 +58,10 @@ func (c *TestClient) GetRepos(ctx context.Context, req *pb.GetReposRequest) (*pb
 	return &pb.GetReposResponse{}, nil
 }
 
+func (c *TestClient) GetRepo(ctx context.Context, req *pb.GetRepoRequest) (*pb.GetRepoResponse, error) {
+	return &pb.GetRepoResponse{}, nil
+}
+
 func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
 	return &pb.GetLabelsResponse{Labels: c.labels[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
 }
