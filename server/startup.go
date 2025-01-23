@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 	"github.com/google/go-github/v50/github"
@@ -23,6 +24,10 @@ var (
 		Name: "githubridge_tracked_issues",
 		Help: "The number of issues being tracked",
 	}, []string{"repo"})
+
+	startupTime = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "githubridge_startup_time_ms",
+	})
 
 	callback = "http://ghwebhook.brotherlogic-backend.com/"
 )
@@ -84,13 +89,18 @@ func (s *Server) loadIssues(ctx context.Context, repo string) error {
 }
 
 func (s *Server) startup(ctx context.Context) error {
+	t := time.Now()
+	defer func() {
+		startupTime.Set(float64(time.Since(t).Milliseconds()))
+	}()
+
 	cpage := 1
 	lpage := 1
 
 	s.repos = []string{}
 	s.issues = []*pb.GithubIssue{}
 
-	// Install the webhook
+	// Install the webhook and health handler
 	go func() {
 		http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 			if s.ready {
