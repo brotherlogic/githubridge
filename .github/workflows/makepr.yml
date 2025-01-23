@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: pull-request
         run: |
-          gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
+          gh pr create --fill
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
