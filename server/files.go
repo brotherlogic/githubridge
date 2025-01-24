@@ -21,9 +21,12 @@ func (s *Server) ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.L
 		return nil, err
 	}
 
-	var files []string
+	var files []*pb.File
 	for _, c := range content {
-		files = append(files, c.GetPath())
+		files = append(files, &pb.File{
+			Name: c.GetPath(),
+			Hash: c.GetSHA(),
+		})
 	}
 
 	return &pb.ListFilesResponse{Files: files}, nil

@@ -149,8 +149,13 @@ message ListFilesRequest {
     string path = 3;
 }
 
+message File {
+    string name = 1;
+    string hash = 2;
+}
+
 message ListFilesResponse {
-    repeated string files = 1;
+    repeated File files = 1;
 }
 
 message GetRepoRequest {
