@@ -25,7 +25,7 @@ func convertComment(comment *github.IssueComment) *pb.Comment {
 
 func (s *Server) getFromCommentCache(ctx context.Context, req *pb.GetCommentsRequest) ([]*pb.Comment, error) {
 	key := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
-	val, ok := s.comments[key]
+	val, ok := s.comments.Load(key)
 	if ok && time.Since(val.Cached) < time.Minute*30 {
 		return val.Comments, nil
 	}

@@ -9,6 +9,7 @@ import (
 	"github.com/google/go-github/v50/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"golang.org/x/sync/syncmap"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 )
@@ -47,7 +48,7 @@ type Server struct {
 	ready   bool // ready to server
 	authKey string
 
-	comments map[string]*CommentCache
+	comments syncmap.Map
 }
 
 func NewServer(client *github.Client, user string) *Server {
