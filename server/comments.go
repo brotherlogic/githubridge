@@ -10,7 +10,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v66/github"
+
+	ghiter "github.com/enrichman/gh-iter"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 )
@@ -51,21 +53,16 @@ func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*
 		return &pb.GetCommentsResponse{Comments: ccomments}, nil
 	}
 
-	results, ghr, err := s.client.Issues.ListComments(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueListCommentsOptions{})
-	processResponse(ghr)
-
-	if err != nil {
+	// create an iterator and start looping through all the results
+	rcomments := ghiter.NewFromFn1(s.client.Issues.ListComments, req.GetUser(), req.GetRepo(), int(req.GetId()))
+	var comments []*pb.Comment
+	for _, rcomment := range rcomments {
+		comments = append(comments, convertComment(rcomment))
+	}
+	if err := rcomments.Err(); err != nil {
 		return nil, err
 	}
 
-	if ghr.LastPage > 1 {
-		return nil, status.Errorf(codes.FailedPrecondition, "There are more comments than we're returning (%v)  -> %+v", req, ghr)
-	}
-
-	var comments []*pb.Comment
-	for _, comment := range results {
-		comments = append(comments, convertComment(comment))
-	}
 	s.insertCommentsIntoCache(ctx, req, comments)
 	return &pb.GetCommentsResponse{Comments: comments}, nil
 }
