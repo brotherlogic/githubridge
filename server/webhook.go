@@ -82,7 +82,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 
 		// Invalidate the cache
 		key := fmt.Sprintf("%v-%v-%v", user, repo, isid)
-		delete(s.comments, key)
+		s.comments.Delete(key)
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
 	}
