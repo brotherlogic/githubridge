@@ -25,7 +25,8 @@ func convertComment(comment *github.IssueComment) *pb.Comment {
 
 func (s *Server) getFromCommentCache(ctx context.Context, req *pb.GetCommentsRequest) ([]*pb.Comment, error) {
 	key := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
-	val, ok := s.comments.Load(key)
+	valo, ok := s.comments.Load(key)
+	val := valo.(*CommentCache)
 	if ok && time.Since(val.Cached) < time.Minute*30 {
 		return val.Comments, nil
 	}
@@ -34,10 +35,10 @@ func (s *Server) getFromCommentCache(ctx context.Context, req *pb.GetCommentsReq
 
 func (s *Server) insertCommentsIntoCache(ctx context.Context, req *pb.GetCommentsRequest, comments []*pb.Comment) error {
 	key := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
-	s.comments[key] = &CommentCache{
+	s.comments.Store(key, &CommentCache{
 		Comments: comments,
 		Cached:   time.Now(),
-	}
+	})
 	return nil
 }
 

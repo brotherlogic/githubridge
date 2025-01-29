@@ -53,10 +53,9 @@ type Server struct {
 
 func NewServer(client *github.Client, user string) *Server {
 	s := &Server{
-		client:   client,
-		comments: map[string]*CommentCache{},
-		user:     user,
-		ready:    true}
+		client: client,
+		user:   user,
+		ready:  true}
 
 	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
 
