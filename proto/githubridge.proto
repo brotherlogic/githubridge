@@ -169,6 +169,17 @@ message GetRepoResponse {
     string sha1 = 1;
 }
 
+message GetFileRequest {
+    string user = 1;
+    string repo = 2;
+
+    string path = 3;
+}
+
+message GetFileResponse {
+    bytes content = 1;
+}
+
 service GithubridgeService {
     rpc AddLabel(AddLabelRequest) returns (AddLabelResponse);
     rpc DeleteLabel(DeleteLabelRequest) returns (DeleteLabelResponse);
@@ -184,4 +195,5 @@ service GithubridgeService {
     rpc GetProjects(GetProjectsRequest) returns (GetProjectsResponse);
     rpc ListFiles(ListFilesRequest) returns (ListFilesResponse);
     rpc GetRepo(GetRepoRequest) returns (GetRepoResponse);
+    rpc GetFile(GetFileRequest) returns (GetFileResponse);
 }
