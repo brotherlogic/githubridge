@@ -8,585 +8,585 @@ metadata:
 data:
   printqueue-dash.json: |
       {
-      "annotations": {
-        "list": [
+        "annotations": {
+          "list": [
+            {
+              "builtIn": 1,
+              "datasource": {
+                "type": "grafana",
+                "uid": "-- Grafana --"
+              },
+              "enable": true,
+              "hide": true,
+              "iconColor": "rgba(0, 211, 255, 1)",
+              "name": "Annotations & Alerts",
+              "type": "dashboard"
+            }
+          ]
+        },
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "graphTooltip": 0,
+        "links": [],
+        "liveNow": false,
+        "panels": [
           {
-            "builtIn": 1,
             "datasource": {
-              "type": "grafana",
-              "uid": "-- Grafana --"
+              "type": "prometheus",
+              "uid": "prometheus"
             },
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
-          }
-        ]
-      },
-      "editable": true,
-      "fiscalYearStartMonth": 0,
-      "graphTooltip": 0,
-      "links": [],
-      "liveNow": false,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 0,
-            "y": 0
-          },
-          "id": 2,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.2.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "avg(githubridge_startup_time_ms)",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Startup Time",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "green",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 4,
-            "x": 3,
-            "y": 0
-          },
-          "id": 6,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.2.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "avg(githubridge_tracked_repos)",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Tracked Repos",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
                 },
-                "inspect": false
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "ms"
               },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
+              "overrides": []
             },
-            "overrides": [
+            "gridPos": {
+              "h": 8,
+              "w": 3,
+              "x": 0,
+              "y": 0
+            },
+            "id": 2,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.2.3",
+            "targets": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Time"
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
                 },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 168
-                  }
-                ]
+                "editorMode": "code",
+                "expr": "avg(githubridge_startup_time_ms)",
+                "legendFormat": "__auto",
+                "range": true,
+                "refId": "A"
               }
-            ]
+            ],
+            "title": "Startup Time",
+            "type": "stat"
           },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 7,
-            "y": 0
-          },
-          "id": 3,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
             },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "10.2.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "loki",
-                "uid": "P8E80F9AEF21F6940"
-              },
-              "editorMode": "builder",
-              "expr": "{namespace=\"githubridge\"} |= `REPO`",
-              "queryType": "range",
-              "refId": "A"
-            }
-          ],
-          "title": "Panel Title",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "id": true,
-                  "labels": true,
-                  "tsNs": true
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
                 },
-                "includeByName": {},
-                "indexByName": {},
-                "renameByName": {}
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 80
+                    }
+                  ]
                 }
               },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 4,
+              "x": 3,
+              "y": 0
+            },
+            "id": 6,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.2.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                },
+                "editorMode": "code",
+                "expr": "avg(githubridge_tracked_repos)",
+                "legendFormat": "__auto",
+                "range": true,
+                "refId": "A"
               }
+            ],
+            "title": "Tracked Repos",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "P8E80F9AEF21F6940"
             },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 9,
-            "x": 15,
-            "y": 0
-          },
-          "id": 4,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "githubridge_creates",
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Panel Title",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
                 },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "inspect": false
                 },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
                 }
               },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Time"
                   },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 168
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 7,
+              "y": 0
+            },
+            "id": 3,
+            "options": {
+              "cellHeight": "sm",
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true,
+              "sortBy": []
+            },
+            "pluginVersion": "10.2.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "P8E80F9AEF21F6940"
+                },
+                "editorMode": "builder",
+                "expr": "{namespace=\"githubridge\"} |= `REPO`",
+                "queryType": "range",
+                "refId": "A"
               }
+            ],
+            "title": "Panel Title",
+            "transformations": [
+              {
+                "id": "organize",
+                "options": {
+                  "excludeByName": {
+                    "id": true,
+                    "labels": true,
+                    "tsNs": true
+                  },
+                  "includeByName": {},
+                  "indexByName": {},
+                  "renameByName": {}
+                }
+              }
+            ],
+            "type": "table"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
             },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 24,
-            "x": 0,
-            "y": 8
-          },
-          "id": 1,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "githubridge_tracked_issues",
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Tracked Issues",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
                 },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
                 },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
                 }
               },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 9,
+              "x": 15,
+              "y": 0
+            },
+            "id": 4,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
               }
             },
-            "overrides": []
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                },
+                "editorMode": "code",
+                "expr": "githubridge_creates",
+                "instant": false,
+                "legendFormat": "__auto",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Panel Title",
+            "type": "timeseries"
           },
-          "gridPos": {
-            "h": 11,
-            "w": 24,
-            "x": 0,
-            "y": 20
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 24,
+              "x": 0,
+              "y": 8
+            },
+            "id": 1,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                },
+                "editorMode": "code",
+                "expr": "githubridge_tracked_issues",
+                "instant": false,
+                "legendFormat": "__auto",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Tracked Issues",
+            "type": "timeseries"
           },
-          "id": 5,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
             },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
               },
-              "editorMode": "code",
-              "expr": "githubrdige_quota_left",
-              "instant": false,
-              "legendFormat": "Quota",
-              "range": true,
-              "refId": "A"
+              "overrides": []
             },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "githubridge_quota_available",
-              "hide": false,
-              "instant": false,
-              "legendFormat": "Limit",
-              "range": true,
-              "refId": "B"
+            "gridPos": {
+              "h": 11,
+              "w": 24,
+              "x": 0,
+              "y": 20
             },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
+            "id": 5,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
               },
-              "editorMode": "code",
-              "expr": "githubridge_quota_reset_time",
-              "hide": false,
-              "instant": false,
-              "legendFormat": "Reset Time",
-              "range": true,
-              "refId": "C"
-            }
-          ],
-          "title": "Panel Title",
-          "type": "timeseries"
-        }
-      ],
-      "refresh": "1m",
-      "schemaVersion": 39,
-      "tags": [],
-      "templating": {
-        "list": []
-      },
-      "time": {
-        "from": "now-1h",
-        "to": "now"
-      },
-      "timepicker": {},
-      "timezone": "",
-      "title": "Githubridge",
-      "uid": "e74a73ee-6c8e-48d9-b220-15da0306ee5e",
-      "version": 1,
-      "weekStart": ""
-    }
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                },
+                "editorMode": "code",
+                "expr": "githubrdige_quota_left",
+                "instant": false,
+                "legendFormat": "Quota",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                },
+                "editorMode": "code",
+                "expr": "githubridge_quota_available",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "Limit",
+                "range": true,
+                "refId": "B"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                },
+                "editorMode": "code",
+                "expr": "githubridge_quota_reset_time",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "Reset Time",
+                "range": true,
+                "refId": "C"
+              }
+            ],
+            "title": "Panel Title",
+            "type": "timeseries"
+          }
+        ],
+        "refresh": "1m",
+        "schemaVersion": 39,
+        "tags": [],
+        "templating": {
+          "list": []
+        },
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "timepicker": {},
+        "timezone": "",
+        "title": "Githubridge",
+        "uid": "e74a73ee-6c8e-48d9-b220-15da0306ee5e",
+        "version": 1,
+        "weekStart": ""
+      }
