@@ -26,9 +26,12 @@ func convertComment(comment *github.IssueComment) *pb.Comment {
 func (s *Server) getFromCommentCache(ctx context.Context, req *pb.GetCommentsRequest) ([]*pb.Comment, error) {
 	key := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
 	valo, ok := s.comments.Load(key)
-	val := valo.(*CommentCache)
-	if ok && time.Since(val.Cached) < time.Minute*30 {
-		return val.Comments, nil
+
+	if ok {
+		val := valo.(*CommentCache)
+		if time.Since(val.Cached) < time.Minute*30 {
+			return val.Comments, nil
+		}
 	}
 	return nil, status.Errorf(codes.NotFound, "Not in cache")
 }
