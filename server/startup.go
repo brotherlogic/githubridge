@@ -32,16 +32,21 @@ var (
 	callback = "http://ghwebhook.brotherlogic-backend.com/"
 )
 
+func convertIssueState(state string) pb.IssueState {
+	switch state {
+	case "open":
+		return pb.IssueState_ISSUE_STATE_OPEN
+	case "closed":
+		return pb.IssueState_ISSUE_STATE_CLOSED
+	}
+
+	return pb.IssueState_ISSUE_STATE_UNKNOWN
+}
+
 func convertIssue(issue *github.Issue, repo string) *pb.GithubIssue {
 	log.Printf("CONVERT: %v", issue)
 
-	issueState := pb.IssueState_ISSUE_STATE_UNKNOWN
-	switch issue.GetState() {
-	case "open":
-		issueState = pb.IssueState_ISSUE_STATE_OPEN
-	case "closed":
-		issueState = pb.IssueState_ISSUE_STATE_CLOSED
-	}
+	issueState := convertIssueState(issue.GetState())
 
 	var labels []string
 	for _, label := range issue.Labels {
