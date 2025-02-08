@@ -18,6 +18,7 @@ func (s *Server) ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.L
 		path = "/"
 	}
 	_, content, ghr, err := s.client.Repositories.GetContents(ctx, req.GetUser(), req.GetRepo(), path, &github.RepositoryContentGetOptions{})
+	log.Printf("Path: %v -> %v err, with %+v", path, err, ghr)
 
 	processResponse(ghr)
 
