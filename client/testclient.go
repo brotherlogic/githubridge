@@ -70,6 +70,10 @@ func (c *TestClient) GetFile(ctx context.Context, req *pb.GetFileRequest) (*pb.G
 	return &pb.GetFileResponse{}, nil
 }
 
+func (c *TestClient) UpdateFile(ctx context.Context, req *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
+	return &pb.UpdateFileResponse{}, nil
+}
+
 func (c *TestClient) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.GetLabelsResponse, error) {
 	return &pb.GetLabelsResponse{Labels: c.labels[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
 }

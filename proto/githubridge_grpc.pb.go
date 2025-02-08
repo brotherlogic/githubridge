@@ -34,6 +34,7 @@ const (
 	GithubridgeService_ListFiles_FullMethodName      = "/githubridge.GithubridgeService/ListFiles"
 	GithubridgeService_GetRepo_FullMethodName        = "/githubridge.GithubridgeService/GetRepo"
 	GithubridgeService_GetFile_FullMethodName        = "/githubridge.GithubridgeService/GetFile"
+	GithubridgeService_UpdateFile_FullMethodName     = "/githubridge.GithubridgeService/UpdateFile"
 )
 
 // GithubridgeServiceClient is the client API for GithubridgeService service.
@@ -55,6 +56,7 @@ type GithubridgeServiceClient interface {
 	ListFiles(ctx context.Context, in *ListFilesRequest, opts ...grpc.CallOption) (*ListFilesResponse, error)
 	GetRepo(ctx context.Context, in *GetRepoRequest, opts ...grpc.CallOption) (*GetRepoResponse, error)
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
+	UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error)
 }
 
 type githubridgeServiceClient struct {
@@ -200,6 +202,15 @@ func (c *githubridgeServiceClient) GetFile(ctx context.Context, in *GetFileReque
 	return out, nil
 }
 
+func (c *githubridgeServiceClient) UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error) {
+	out := new(UpdateFileResponse)
+	err := c.cc.Invoke(ctx, GithubridgeService_UpdateFile_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GithubridgeServiceServer is the server API for GithubridgeService service.
 // All implementations should embed UnimplementedGithubridgeServiceServer
 // for forward compatibility
@@ -219,6 +230,7 @@ type GithubridgeServiceServer interface {
 	ListFiles(context.Context, *ListFilesRequest) (*ListFilesResponse, error)
 	GetRepo(context.Context, *GetRepoRequest) (*GetRepoResponse, error)
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
+	UpdateFile(context.Context, *UpdateFileRequest) (*UpdateFileResponse, error)
 }
 
 // UnimplementedGithubridgeServiceServer should be embedded to have forward compatible implementations.
@@ -269,6 +281,9 @@ func (UnimplementedGithubridgeServiceServer) GetRepo(context.Context, *GetRepoRe
 }
 func (UnimplementedGithubridgeServiceServer) GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFile not implemented")
+}
+func (UnimplementedGithubridgeServiceServer) UpdateFile(context.Context, *UpdateFileRequest) (*UpdateFileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFile not implemented")
 }
 
 // UnsafeGithubridgeServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -552,6 +567,24 @@ func _GithubridgeService_GetFile_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GithubridgeService_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GithubridgeServiceServer).UpdateFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GithubridgeService_UpdateFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GithubridgeServiceServer).UpdateFile(ctx, req.(*UpdateFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GithubridgeService_ServiceDesc is the grpc.ServiceDesc for GithubridgeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -618,6 +651,10 @@ var GithubridgeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFile",
 			Handler:    _GithubridgeService_GetFile_Handler,
+		},
+		{
+			MethodName: "UpdateFile",
+			Handler:    _GithubridgeService_UpdateFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

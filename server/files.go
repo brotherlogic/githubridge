@@ -5,6 +5,7 @@ import (
 	"io"
 
 	pb "github.com/brotherlogic/githubridge/proto"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/google/go-github/v50/github"
 )
@@ -48,4 +49,14 @@ func (s *Server) GetFile(ctx context.Context, req *pb.GetFileRequest) (*pb.GetFi
 	rcs.Close()
 
 	return &pb.GetFileResponse{Content: bodyBytes}, nil
+}
+
+func (s *Server) UpdateFile(ctx context.Context, req *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
+	_, ghr, err := s.client.Repositories.UpdateFile(ctx, req.GetUser(), req.GetRepo(), req.GetPath(),
+		&github.RepositoryContentFileOptions{
+			Message: proto.String(req.GetMessage()),
+			Content: req.GetContent(),
+		})
+	processResponse(ghr)
+	return &pb.UpdateFileResponse{}, err
 }
