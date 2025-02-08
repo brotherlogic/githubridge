@@ -47,7 +47,7 @@ message GetIssuesResponse {
 }
 
 message GetIssueResponse {
-    string state = 1;
+    IssueState state = 1;
     int32 comments = 2;
     repeated string labels = 3;
 }

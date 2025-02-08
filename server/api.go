@@ -103,7 +103,7 @@ func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.Get
 	}
 
 	return &pb.GetIssueResponse{
-		State:    issue.GetState(),
+		State:    convertIssueState(issue.GetState()),
 		Comments: int32(issue.GetComments()),
 		Labels:   labels,
 	}, nil
