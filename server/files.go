@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"io"
+	"log"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 	"google.golang.org/protobuf/proto"
@@ -11,6 +12,7 @@ import (
 )
 
 func (s *Server) ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.ListFilesResponse, error) {
+	log.Printf("ListFiles: %v", req)
 	path := req.GetPath()
 	if path == "" {
 		path = "/"

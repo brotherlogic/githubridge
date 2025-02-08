@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -46,11 +45,8 @@ func (s *Server) insertCommentsIntoCache(ctx context.Context, req *pb.GetComment
 }
 
 func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*pb.GetCommentsResponse, error) {
-	log.Printf("GetComments %v", req)
-
 	ccomments, err := s.getFromCommentCache(ctx, req)
 	if err == nil {
-		log.Printf("Serving from cache")
 		return &pb.GetCommentsResponse{Comments: ccomments}, nil
 	}
 
