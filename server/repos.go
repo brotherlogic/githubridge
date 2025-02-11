@@ -16,7 +16,7 @@ func (s *Server) GetRepo(ctx context.Context, req *pb.GetRepoRequest) (*pb.GetRe
 		branch = "main"
 	}
 	repo, ghr, err := s.client.Repositories.GetBranch(ctx, req.GetUser(), req.GetRepo(), branch, true)
-	processResponse(ghr)
+	processResponse(ghr, "repos-getbranch")
 	if err != nil {
 		return nil, err
 	}

@@ -50,7 +50,7 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 		Title: proto.String(req.GetTitle()),
 		Body:  proto.String(req.GetBody()),
 	})
-	processResponse(resp)
+	processResponse(resp, "issues-create")
 	if err != nil {
 		creates.With(prometheus.Labels{"repo": req.GetRepo(), "code": fmt.Sprintf("%v", status.Code(err))}).Inc()
 		return nil, err
@@ -69,7 +69,7 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 	_, resp, err := s.client.Issues.Edit(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueRequest{
 		State: proto.String("closed"),
 	})
-	processResponse(resp)
+	processResponse(resp, "issues-edit")
 
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 
 func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
 	issue, resp, err := s.client.Issues.Get(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()))
-	processResponse(resp)
+	processResponse(resp, "issues-get")
 
 	if resp != nil && resp.StatusCode == 404 {
 		return nil, status.Errorf(codes.NotFound, "Cannot find %v/%v/%v", req.User, req.GetRepo(), req.GetId())
