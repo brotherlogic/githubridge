@@ -27,12 +27,17 @@ var (
 		Name: "githubridge_quota_reset_time",
 		Help: "The amount of quota left",
 	})
+	requests = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "githubridge_requests",
+		Help: "The number of requests in a given type",
+	}, []string{"type"})
 )
 
-func processResponse(resp *github.Response) {
+func processResponse(resp *github.Response, typ string) {
 	quotaLeft.Set(float64(resp.Rate.Remaining))
 	quotaAvail.Set(float64(resp.Rate.Limit))
 	quotaResetTime.Set(float64(resp.Rate.Reset.UnixMilli()))
+	requests.With(prometheus.Labels{"type": typ}).Inc()
 }
 
 type CommentCache struct {

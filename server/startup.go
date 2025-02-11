@@ -73,6 +73,7 @@ func (s *Server) loadIssues(ctx context.Context, repo string) error {
 		issues, resp, err := s.client.Issues.ListByRepo(ctx, s.user, repo, &github.IssueListByRepoOptions{
 			ListOptions: github.ListOptions{Page: cpage},
 		})
+		processResponse(resp, "issue-listbyrepo")
 		lpage = resp.LastPage
 		log.Printf("READ ISSUE: %v / %v (%v)", cpage, resp.LastPage, len(s.repos))
 		if err != nil {
@@ -133,6 +134,8 @@ func (s *Server) startup(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
+		processResponse(resp, "repos-list")
+
 		for _, repo := range repos {
 			log.Printf("REPO: %v", repo.GetName())
 			s.repos = append(s.repos, repo.GetName())
@@ -148,10 +151,11 @@ func (s *Server) startup(ctx context.Context) error {
 	for _, repo := range s.repos {
 		s.loadIssues(ctx, repo)
 
-		hooks, _, err := s.client.Repositories.ListHooks(ctx, s.user, repo, &github.ListOptions{})
+		hooks, ghr, err := s.client.Repositories.ListHooks(ctx, s.user, repo, &github.ListOptions{})
 		if err != nil {
 			return err
 		}
+		processResponse(ghr, "repos-listhooks")
 
 		events := []string{"issues", "issue_comment"}
 

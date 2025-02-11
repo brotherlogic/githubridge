@@ -51,7 +51,7 @@ func (s *Server) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*
 	}
 
 	results, ghr, err := s.client.Issues.ListComments(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueListCommentsOptions{})
-	processResponse(ghr)
+	processResponse(ghr, "issues-listcomments")
 
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (s *Server) CommentOnIssue(ctx context.Context, req *pb.CommentOnIssueReque
 	_, resp, err := s.client.Issues.CreateComment(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), &github.IssueComment{
 		Body: proto.String(req.GetComment()),
 	})
-	processResponse(resp)
+	processResponse(resp, "issues-createcomment")
 
 	if err != nil {
 		return nil, err

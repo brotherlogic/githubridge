@@ -8,10 +8,11 @@ import (
 )
 
 func (s *Server) GetProjects(ctx context.Context, req *pb.GetProjectsRequest) (*pb.GetProjectsResponse, error) {
-	projects, _, err := s.client.Users.ListProjects(ctx, req.GetUser(), &github.ProjectListOptions{})
+	projects, ghr, err := s.client.Users.ListProjects(ctx, req.GetUser(), &github.ProjectListOptions{})
 	if err != nil {
 		return nil, err
 	}
+	processResponse(ghr, "users-listprojects")
 
 	var rprojects []string
 	for _, project := range projects {
