@@ -28,7 +28,7 @@ var (
 		Help: "The amount of quota left",
 	})
 	requests = promauto.NewCounterVec(prometheus.CounterOpts{
-		Name: "githubridge_requests",
+		Name: "githubridge_client_requests",
 		Help: "The number of requests in a given type",
 	}, []string{"type"})
 )
