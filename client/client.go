@@ -24,6 +24,8 @@ type GithubridgeClient interface {
 	ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.ListFilesResponse, error)
 	GetFile(ctx context.Context, req *pb.GetFileRequest) (*pb.GetFileResponse, error)
 	UpdateFile(ctx context.Context, req *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error)
+	SetTag(ctx context.Context, req *pb.SetTagRequest) (*pb.SetTagResponse, error)
+	GetTags(ctx context.Context, req *pb.GetTagsRequest) (*pb.GetTagsResponse, error)
 }
 
 type rClient struct {
@@ -108,4 +110,14 @@ func (c *rClient) GetFile(ctx context.Context, req *pb.GetFileRequest) (*pb.GetF
 func (c *rClient) UpdateFile(ctx context.Context, req *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
 	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
 	return c.gClient.UpdateFile(nctx, req)
+}
+
+func (c *rClient) SetTag(ctx context.Context, req *pb.SetTagRequest) (*pb.SetTagResponse, error) {
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.SetTag(nctx, req)
+}
+
+func (c *rClient) GetTags(ctx context.Context, req *pb.GetTagsRequest) (*pb.GetTagsResponse, error) {
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.GetTags(nctx, req)
 }

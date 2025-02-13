@@ -91,3 +91,10 @@ func (c *TestClient) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest
 	delete(c.labels, label)
 	return &pb.DeleteLabelResponse{}, nil
 }
+
+func (c *TestClient) SetTag(ctx context.Context, req *pb.SetTagRequest) (*pb.SetTagResponse, error) {
+	return &pb.SetTagResponse{}, nil
+}
+func (c *TestClient) GetTags(ctx context.Context, req *pb.GetTagsRequest) (*pb.GetTagsResponse, error) {
+	return &pb.GetTagsResponse{}, nil
+}
