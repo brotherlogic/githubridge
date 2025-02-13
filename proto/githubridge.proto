@@ -194,6 +194,11 @@ message UpdateFileResponse {
 
 }
 
+message GetTagRequest {
+    string user = 1;
+    string repo = 2;
+}
+
 service GithubridgeService {
     rpc AddLabel(AddLabelRequest) returns (AddLabelResponse);
     rpc DeleteLabel(DeleteLabelRequest) returns (DeleteLabelResponse);
@@ -211,4 +216,32 @@ service GithubridgeService {
     rpc GetRepo(GetRepoRequest) returns (GetRepoResponse);
     rpc GetFile(GetFileRequest) returns (GetFileResponse);
     rpc UpdateFile(UpdateFileRequest)  returns (UpdateFileResponse);
+    rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
+    rpc SetTag(SetTagRequest) returns (SetTagResponse);
+}
+
+message GetTagsRequest {
+    string user = 1;
+    string repo = 2;
+    int32 count = 3;
+}
+
+message Tag {
+    string value = 1;
+    int64 timestamp_ms = 2;
+    string sha5 = 3;
+}
+
+message GetTagsResponse {
+    repeated Tag tags = 1;
+}
+
+message SetTagRequest {
+    string user = 1;
+    string repo = 2;
+    string sha5 = 3;
+    string tag = 4;
+}
+
+message SetTagResponse {
 }
