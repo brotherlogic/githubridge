@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 	"github.com/google/go-github/v50/github"
@@ -23,6 +24,7 @@ func (s *Server) GetLabels(ctx context.Context, req *pb.GetLabelsRequest) (*pb.G
 }
 
 func (s *Server) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
+	log.Printf("AddLabel %v", req)
 	_, gr, err := s.client.Issues.AddLabelsToIssue(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()), []string{req.GetLabel()})
 	processResponse(gr, "issues-addlabelstoissue")
 	return &pb.AddLabelResponse{}, err
