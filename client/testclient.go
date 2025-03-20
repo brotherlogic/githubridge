@@ -90,6 +90,10 @@ func (c *TestClient) GetProjects(ctx context.Context, req *pb.GetProjectsRequest
 	return &pb.GetProjectsResponse{}, nil
 }
 
+func (c *TestClient) GetReleases(ctx context.Context, req *pb.GetReleasesRequest) (*pb.GetReleasesResponse, error) {
+	return &pb.GetReleasesResponse{}, nil
+}
+
 func (c *TestClient) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {
 	label := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
 	delete(c.labels, label)
