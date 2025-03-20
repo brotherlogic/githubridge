@@ -24,6 +24,7 @@ type GithubridgeClient interface {
 	ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.ListFilesResponse, error)
 	GetFile(ctx context.Context, req *pb.GetFileRequest) (*pb.GetFileResponse, error)
 	UpdateFile(ctx context.Context, req *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error)
+	GetProjects(ctx context.Context, req *pb.GetProjectsRequest) (*pb.GetProjectsResponse, error)
 }
 
 type rClient struct {
@@ -108,4 +109,8 @@ func (c *rClient) GetFile(ctx context.Context, req *pb.GetFileRequest) (*pb.GetF
 func (c *rClient) UpdateFile(ctx context.Context, req *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
 	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
 	return c.gClient.UpdateFile(nctx, req)
+}
+func (c *rClient) GetProjects(ctx context.Context, req *pb.GetProjectsRequest) (*pb.GetProjectsResponse, error) {
+	nctx := metadata.AppendToOutgoingContext(context.Background(), "auth-token", string(c.passkey))
+	return c.gClient.GetProjects(nctx, req)
 }

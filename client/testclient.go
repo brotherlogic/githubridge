@@ -86,6 +86,10 @@ func (c *TestClient) GetComments(ctx context.Context, req *pb.GetCommentsRequest
 	return &pb.GetCommentsResponse{Comments: c.comments[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
 }
 
+func (c *TestClient) GetProjects(ctx context.Context, req *pb.GetProjectsRequest) (*pb.GetProjectsResponse, error) {
+	return &pb.GetProjectsResponse{}, nil
+}
+
 func (c *TestClient) DeleteLabel(ctx context.Context, req *pb.DeleteLabelRequest) (*pb.DeleteLabelResponse, error) {
 	label := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
 	delete(c.labels, label)
