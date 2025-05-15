@@ -208,6 +208,7 @@ func (s *Server) metrics() {
 		issueMap[issue.GetRepo()]++
 	}
 	trackedIssues.Reset()
+	log.Printf("Building issues from %v", len(s.issues))
 	for repo, count := range issueMap {
 		trackedIssues.With(prometheus.Labels{"repo": repo}).Set(count)
 	}
