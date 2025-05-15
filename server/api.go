@@ -38,6 +38,8 @@ func (s *Server) ServerInterceptor(ctx context.Context,
 }
 
 func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
+	defer s.metrics()
+
 	// Fail if an issue is open with that name
 	log.Printf("Checking %v issues for dedup", len(s.issues))
 	for _, issue := range s.issues {
