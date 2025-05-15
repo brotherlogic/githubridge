@@ -62,6 +62,15 @@ func (s *Server) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*
 		return nil, fmt.Errorf("Bad response code: %v", resp.StatusCode)
 	}
 
+	// Add this issue to the exisitng list
+	s.issues = append(s.issues, &pb.GithubIssue{
+		Repo:  req.GetRepo(),
+		User:  req.GetUser(),
+		Id:    int64(issue.GetNumber()),
+		Title: req.GetTitle(),
+		State: pb.IssueState_ISSUE_STATE_OPEN,
+	})
+
 	return &pb.CreateIssueResponse{IssueId: (int64(issue.GetNumber()))}, nil
 }
 
