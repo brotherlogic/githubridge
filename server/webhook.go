@@ -83,6 +83,17 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		// Invalidate the cache
 		key := fmt.Sprintf("%v-%v-%v", user, repo, isid)
 		s.comments.Delete(key)
+	case *github.LabelEvent:
+		// Is this a label addition?
+		user := event.GetRepo().GetOwner().GetLogin()
+		repo := event.GetRepo().GetName()
+		isid := event.GetLabel().GetID()
+
+		for _, issue := range s.issues {
+			if issue.GetRepo() == repo && issue.GetUser() == user && issue.GetId() == isid {
+				issue.Labels = append(issue.Labels, event.GetLabel().GetName())
+			}
+		}
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
 	}
