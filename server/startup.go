@@ -129,6 +129,9 @@ func (s *Server) startup(ctx context.Context) error {
 			ListOptions: github.ListOptions{Page: cpage},
 			Type:        "all",
 		})
+		if err != nil {
+			return err
+		}
 		lpage = resp.LastPage
 		log.Printf("READ: %v / %v (%v)", cpage, resp.LastPage, len(s.repos))
 		if err != nil {
