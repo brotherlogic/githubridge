@@ -29,7 +29,7 @@ var (
 		Name: "githubridge_startup_time_ms",
 	})
 
-	callback = "http://ghwebhook.brotherlogic-backend.com/"
+	callback = "https://ghwebhook.brotherlogic-backend.com/"
 )
 
 func convertIssueState(state string) pb.IssueState {
