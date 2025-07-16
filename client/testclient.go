@@ -38,7 +38,7 @@ func (c *TestClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb
 
 func (c *TestClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
 	c.counter++
-	c.issues = append(c.issues, &pb.GithubIssue{Id: c.counter, Title: req.GetTitle(), Repo: req.GetRepo()})
+	c.issues = append(c.issues, &pb.GithubIssue{Id: c.counter, Title: req.GetTitle(), Repo: req.GetRepo(), State: pb.IssueState_ISSUE_STATE_OPEN})
 	return &pb.CreateIssueResponse{IssueId: c.counter}, nil
 }
 
