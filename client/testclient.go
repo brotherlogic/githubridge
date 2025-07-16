@@ -26,6 +26,13 @@ func GetTestClient() GithubridgeClient {
 func (c *TestClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
 	label := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
 	c.labels[label] = append(c.labels[label], req.GetLabel())
+
+	for _, issue := range c.issues {
+		if issue.GetRepo() == req.GetRepo() && issue.GetId() == int64(req.GetId()) {
+			issue.Labels = append(issue.Labels, req.GetLabel())
+		}
+	}
+
 	return &pb.AddLabelResponse{}, nil
 }
 
