@@ -34,9 +34,11 @@ var (
 )
 
 func processResponse(resp *github.Response, typ string) {
-	quotaLeft.Set(float64(resp.Rate.Remaining))
-	quotaAvail.Set(float64(resp.Rate.Limit))
-	quotaResetTime.Set(float64(resp.Rate.Reset.UnixMilli()))
+	if resp != nil {
+		quotaLeft.Set(float64(resp.Rate.Remaining))
+		quotaAvail.Set(float64(resp.Rate.Limit))
+		quotaResetTime.Set(float64(resp.Rate.Reset.UnixMilli()))
+	}
 	requests.With(prometheus.Labels{"type": typ}).Inc()
 }
 

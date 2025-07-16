@@ -74,6 +74,12 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 				OpenedDate: time.Now().Unix(),
 			})
 			s.metrics()
+		} else if action == "labeled" {
+			for _, issue := range s.issues {
+				if issue.GetRepo() == repo && issue.GetUser() == event.Repo.Owner.GetLogin() && issue.GetId() == int64(event.Issue.GetNumber()) {
+					issue.Labels = append(issue.Labels, event.Label.GetName())
+				}
+			}
 		}
 	case *github.IssueCommentEvent:
 		user := event.GetRepo().GetOwner().GetLogin()
@@ -96,6 +102,7 @@ func (s *Server) githubwebhook(w http.ResponseWriter, r *http.Request) {
 		}
 	default:
 		log.Printf("Unable to process %v (%T)", event, event)
+		w.Write([]byte(fmt.Sprintf("Unable to handle (%T)", event)))
 	}
 
 	log.Printf(" -> %v", len(s.issues))
