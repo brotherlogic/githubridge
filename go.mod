@@ -1,13 +1,13 @@
 module github.com/brotherlogic/githubridge
 
-go 1.22.0
+go 1.23.0
 
 toolchain go1.23.4
 
 require (
 	github.com/google/go-github/v50 v50.2.0
 	github.com/prometheus/client_golang v1.20.5
-	golang.org/x/oauth2 v0.25.0
+	golang.org/x/oauth2 v0.27.0
 	golang.org/x/sync v0.10.0
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.4
