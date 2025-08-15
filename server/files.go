@@ -8,7 +8,7 @@ import (
 	pb "github.com/brotherlogic/githubridge/proto"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v74/github"
 )
 
 func (s *Server) ListFiles(ctx context.Context, req *pb.ListFilesRequest) (*pb.ListFilesResponse, error) {

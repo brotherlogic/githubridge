@@ -93,10 +93,6 @@ func (c *TestClient) GetComments(ctx context.Context, req *pb.GetCommentsRequest
 	return &pb.GetCommentsResponse{Comments: c.comments[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
 }
 
-func (c *TestClient) GetProjects(ctx context.Context, req *pb.GetProjectsRequest) (*pb.GetProjectsResponse, error) {
-	return &pb.GetProjectsResponse{}, nil
-}
-
 func (c *TestClient) GetReleases(ctx context.Context, req *pb.GetReleasesRequest) (*pb.GetReleasesResponse, error) {
 	return &pb.GetReleasesResponse{}, nil
 }

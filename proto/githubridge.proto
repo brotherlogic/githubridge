@@ -12,6 +12,8 @@ message GithubIssue {
     int64 opened_date = 5;
     IssueState state = 6;
     repeated string labels = 7;
+
+    repeated GithubIssue sub_issues = 8;
 }
 
 enum IssueState {
@@ -50,6 +52,7 @@ message GetIssueResponse {
     IssueState state = 1;
     int32 comments = 2;
     repeated string labels = 3;
+    repeated GithubIssue sub_issues = 4;
 }
 
 message CloseIssueRequest {
@@ -134,14 +137,6 @@ message GetReposResponse {
     repeated string repos = 1;
 }
 
-message GetProjectsRequest {
-    string user = 1;
-}
-
-message GetProjectsResponse {
-    repeated string projects = 1;
-}
-
 message ListFilesRequest {
     string user = 1;
     string repo = 2;
@@ -220,7 +215,6 @@ service GithubridgeService {
     rpc GetLabels(GetLabelsRequest) returns (GetLabelsResponse);
     rpc GetReleases(GetReleasesRequest) returns (GetReleasesResponse);
     rpc GetRepos(GetReposRequest) returns (GetReposResponse);
-    rpc GetProjects(GetProjectsRequest) returns (GetProjectsResponse);
     rpc ListFiles(ListFilesRequest) returns (ListFilesResponse);
     rpc GetRepo(GetRepoRequest) returns (GetRepoResponse);
     rpc GetFile(GetFileRequest) returns (GetFileResponse);

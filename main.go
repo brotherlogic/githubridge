@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v74/github"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
