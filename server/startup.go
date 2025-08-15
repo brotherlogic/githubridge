@@ -8,7 +8,7 @@ import (
 	"time"
 
 	pb "github.com/brotherlogic/githubridge/proto"
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v74/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"google.golang.org/protobuf/proto"
@@ -166,7 +166,7 @@ func (s *Server) startup(ctx context.Context) error {
 		foundAllEvents := true
 		hid := int64(0)
 		for _, h := range hooks {
-			if h.Config["url"] == callback {
+			if *h.Config.URL == callback {
 				hid = h.GetID()
 				for _, event := range events {
 					foundEvent := false
@@ -181,7 +181,7 @@ func (s *Server) startup(ctx context.Context) error {
 				}
 				found = true
 			} else {
-				log.Printf("Found %v", h.Config["url"])
+				log.Printf("Found %v", h.Config.URL)
 			}
 		}
 
@@ -190,7 +190,7 @@ func (s *Server) startup(ctx context.Context) error {
 			hook := &github.Hook{
 				Active: proto.Bool(true),
 				Events: events,
-				Config: map[string]interface{}{"url": callback},
+				Config: &github.HookConfig{URL: proto.String(callback)},
 			}
 			if !found {
 				a, b, c := s.client.Repositories.CreateHook(ctx, s.user, repo, hook)

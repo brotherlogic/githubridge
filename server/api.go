@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v74/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"google.golang.org/grpc"
@@ -114,10 +114,23 @@ func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.Get
 		labels = append(labels, label.GetName())
 	}
 
+	subissues, resp, err := s.client.SubIssue.ListByIssue(ctx, req.GetUser(), req.GetRepo(), int64(req.GetId()), &github.IssueListOptions{})
+	processResponse(resp, "subissues-listbyissue")
+
+	var subs []*pb.GithubIssue
+	for _, subissue := range subissues {
+		subs = append(subs, &pb.GithubIssue{
+			Id:   *subissue.ID,
+			Repo: *subissue.Repository.Name,
+			User: *subissue.User.Name,
+		})
+	}
+
 	return &pb.GetIssueResponse{
-		State:    convertIssueState(issue.GetState()),
-		Comments: int32(issue.GetComments()),
-		Labels:   labels,
+		State:     convertIssueState(issue.GetState()),
+		Comments:  int32(issue.GetComments()),
+		Labels:    labels,
+		SubIssues: subs,
 	}, nil
 }
 

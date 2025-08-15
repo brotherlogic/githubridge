@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v74/github"
 
 	pb "github.com/brotherlogic/githubridge/proto"
 )
