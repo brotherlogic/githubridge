@@ -143,6 +143,7 @@ func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.Get
 		Comments:  int32(issue.GetComments()),
 		Labels:    labels,
 		SubIssues: subs,
+		Title:     issue.GetTitle(),
 	}, nil
 }
 
