@@ -66,12 +66,8 @@ func NewServer(client *github.Client, user string) *Server {
 
 	s.authKey = os.Getenv("GHB_AUTH_TOKEN")
 
-	err := s.startup(context.Background())
-	if err != nil {
-		log.Printf("Failed to startup: %v", err)
-		os.Exit(1)
-	}
-
+	s.startup(context.Background())
+	
 	s.ready = true
 	return s
 }
