@@ -53,6 +53,7 @@ message GetIssueResponse {
     int32 comments = 2;
     repeated string labels = 3;
     repeated GithubIssue sub_issues = 4;
+    string title = 5;
 }
 
 message CloseIssueRequest {

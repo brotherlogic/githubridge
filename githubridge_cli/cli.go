@@ -15,6 +15,13 @@ import (
 	pb "github.com/brotherlogic/githubridge/proto"
 )
 
+func printIssue(prefix string, issue *pb.GithubIssue) {
+	fmt.Printf("%v%v\n", prefix, issue.GetTitle())
+	for _, sissue := range issue.GetSubIssues() {
+		printIssue(prefix+"  ", sissue)
+	}
+}
+
 func main() {
 	// Load the token
 	dirname, err := os.UserHomeDir()
@@ -38,6 +45,16 @@ func main() {
 	client := pb.NewGithubridgeServiceClient(conn)
 
 	switch os.Args[2] {
+	case "issue":
+		resp, err := client.GetIssue(ctx, &pb.GetIssueRequest{
+			Repo: "gramophile",
+			User: "brotherlogic",
+			Id:   1760,
+		})
+		if err != nil {
+			log.Fatalf("Unable to drain queue: %v", err)
+		}
+		printIssue("", &pb.GithubIssue{Title: "TITLE", SubIssues: resp.GetSubIssues()})
 	case "issues":
 		resp, err := client.GetIssues(ctx, &pb.GetIssuesRequest{})
 		if err != nil {
