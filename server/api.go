@@ -119,10 +119,22 @@ func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.Get
 
 	var subs []*pb.GithubIssue
 	for _, subissue := range subissues {
-		subs = append(subs, &pb.GithubIssue{
-			Id:   *subissue.ID,
-			Repo: *subissue.Repository.Name,
+		resp, err := s.GetIssue(ctx, &pb.GetIssueRequest{
 			User: *subissue.User.Name,
+			Repo: *subissue.Repository.Name,
+			Id:   int32(*subissue.ID),
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		subs = append(subs, &pb.GithubIssue{
+			Id:        int64(*subissue.ID),
+			User:      *subissue.User.Name,
+			Repo:      *subissue.Repository.Name,
+			State:     resp.GetState(),
+			Labels:    resp.GetLabels(),
+			SubIssues: resp.GetSubIssues(),
 		})
 	}
 
