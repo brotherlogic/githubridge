@@ -54,7 +54,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Unable to drain queue: %v", err)
 		}
-		printIssue("", &pb.GithubIssue{Title: "TITLE", SubIssues: resp.GetSubIssues()})
+		printIssue("", &pb.GithubIssue{Title: resp.GetTitle(), SubIssues: resp.GetSubIssues()})
 	case "issues":
 		resp, err := client.GetIssues(ctx, &pb.GetIssuesRequest{})
 		if err != nil {
