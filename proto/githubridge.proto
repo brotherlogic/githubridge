@@ -39,9 +39,13 @@ message GetIssueRequest {
     string user = 1;
     string repo = 2;
     int32 id = 3;
+
+    // Used to track errant callers
+    string caller = 4;
 }
 
-message GetIssuesRequest {}
+message GetIssuesRequest {
+}
 message GetIssuesResponse {
     repeated GithubIssue issues = 1;
 }

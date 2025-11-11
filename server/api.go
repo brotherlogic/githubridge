@@ -26,6 +26,11 @@ var (
 		Name: "githubridge_requests",
 		Help: "The number of server requests",
 	}, []string{"method", "status"})
+
+	getRequests = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "githubridge_get_requests",
+		Help: "The number of get requests",
+	}, []string{"caller"})
 )
 
 func (s *Server) ServerInterceptor(ctx context.Context,
@@ -94,6 +99,11 @@ func (s *Server) CloseIssue(ctx context.Context, req *pb.CloseIssueRequest) (*pb
 }
 
 func (s *Server) GetIssue(ctx context.Context, req *pb.GetIssueRequest) (*pb.GetIssueResponse, error) {
+	if req.GetCaller() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "you must set a caller")
+	}
+	getRequests.With(prometheus.Labels{"caller": req.GetCaller()}).Inc()
+
 	issue, resp, err := s.client.Issues.Get(ctx, req.GetUser(), req.GetRepo(), int(req.GetId()))
 	processResponse(resp, "issues-get")
 
