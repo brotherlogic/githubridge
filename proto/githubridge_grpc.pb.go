@@ -30,7 +30,6 @@ const (
 	GithubridgeService_GetLabels_FullMethodName      = "/githubridge.GithubridgeService/GetLabels"
 	GithubridgeService_GetReleases_FullMethodName    = "/githubridge.GithubridgeService/GetReleases"
 	GithubridgeService_GetRepos_FullMethodName       = "/githubridge.GithubridgeService/GetRepos"
-	GithubridgeService_GetProjects_FullMethodName    = "/githubridge.GithubridgeService/GetProjects"
 	GithubridgeService_ListFiles_FullMethodName      = "/githubridge.GithubridgeService/ListFiles"
 	GithubridgeService_GetRepo_FullMethodName        = "/githubridge.GithubridgeService/GetRepo"
 	GithubridgeService_GetFile_FullMethodName        = "/githubridge.GithubridgeService/GetFile"
@@ -54,7 +53,6 @@ type GithubridgeServiceClient interface {
 	GetLabels(ctx context.Context, in *GetLabelsRequest, opts ...grpc.CallOption) (*GetLabelsResponse, error)
 	GetReleases(ctx context.Context, in *GetReleasesRequest, opts ...grpc.CallOption) (*GetReleasesResponse, error)
 	GetRepos(ctx context.Context, in *GetReposRequest, opts ...grpc.CallOption) (*GetReposResponse, error)
-	GetProjects(ctx context.Context, in *GetProjectsRequest, opts ...grpc.CallOption) (*GetProjectsResponse, error)
 	ListFiles(ctx context.Context, in *ListFilesRequest, opts ...grpc.CallOption) (*ListFilesResponse, error)
 	GetRepo(ctx context.Context, in *GetRepoRequest, opts ...grpc.CallOption) (*GetRepoResponse, error)
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
@@ -181,16 +179,6 @@ func (c *githubridgeServiceClient) GetRepos(ctx context.Context, in *GetReposReq
 	return out, nil
 }
 
-func (c *githubridgeServiceClient) GetProjects(ctx context.Context, in *GetProjectsRequest, opts ...grpc.CallOption) (*GetProjectsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetProjectsResponse)
-	err := c.cc.Invoke(ctx, GithubridgeService_GetProjects_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *githubridgeServiceClient) ListFiles(ctx context.Context, in *ListFilesRequest, opts ...grpc.CallOption) (*ListFilesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListFilesResponse)
@@ -266,7 +254,6 @@ type GithubridgeServiceServer interface {
 	GetLabels(context.Context, *GetLabelsRequest) (*GetLabelsResponse, error)
 	GetReleases(context.Context, *GetReleasesRequest) (*GetReleasesResponse, error)
 	GetRepos(context.Context, *GetReposRequest) (*GetReposResponse, error)
-	GetProjects(context.Context, *GetProjectsRequest) (*GetProjectsResponse, error)
 	ListFiles(context.Context, *ListFilesRequest) (*ListFilesResponse, error)
 	GetRepo(context.Context, *GetRepoRequest) (*GetRepoResponse, error)
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
@@ -314,9 +301,6 @@ func (UnimplementedGithubridgeServiceServer) GetReleases(context.Context, *GetRe
 }
 func (UnimplementedGithubridgeServiceServer) GetRepos(context.Context, *GetReposRequest) (*GetReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRepos not implemented")
-}
-func (UnimplementedGithubridgeServiceServer) GetProjects(context.Context, *GetProjectsRequest) (*GetProjectsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProjects not implemented")
 }
 func (UnimplementedGithubridgeServiceServer) ListFiles(context.Context, *ListFilesRequest) (*ListFilesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFiles not implemented")
@@ -554,24 +538,6 @@ func _GithubridgeService_GetRepos_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GithubridgeService_GetProjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetProjectsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GithubridgeServiceServer).GetProjects(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: GithubridgeService_GetProjects_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GithubridgeServiceServer).GetProjects(ctx, req.(*GetProjectsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _GithubridgeService_ListFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFilesRequest)
 	if err := dec(in); err != nil {
@@ -730,10 +696,6 @@ var GithubridgeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRepos",
 			Handler:    _GithubridgeService_GetRepos_Handler,
-		},
-		{
-			MethodName: "GetProjects",
-			Handler:    _GithubridgeService_GetProjects_Handler,
 		},
 		{
 			MethodName: "ListFiles",

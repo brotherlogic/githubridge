@@ -1,6 +1,9 @@
 name: Create production promotion pull request
 on:
   push:
+    branches:
+      - '*'
+      - '!main'
 
 permissions:
   pull-requests: write
@@ -10,8 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          fetch-depth: 0
       - name: pull-request
         run: |
-          gh pr create --title "My pull request" --body "Description" || gh pr edit --title "My pull request" --body "Description"
+          gh pr create --fill-first
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}

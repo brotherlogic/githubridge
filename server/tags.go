@@ -4,7 +4,7 @@ import (
 	"context"
 
 	pb "github.com/brotherlogic/githubridge/proto"
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v74/github"
 	"google.golang.org/protobuf/proto"
 )
 

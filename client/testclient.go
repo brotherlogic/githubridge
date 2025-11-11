@@ -26,12 +26,19 @@ func GetTestClient() GithubridgeClient {
 func (c *TestClient) AddLabel(ctx context.Context, req *pb.AddLabelRequest) (*pb.AddLabelResponse, error) {
 	label := fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())
 	c.labels[label] = append(c.labels[label], req.GetLabel())
+
+	for _, issue := range c.issues {
+		if issue.GetRepo() == req.GetRepo() && issue.GetId() == int64(req.GetId()) {
+			issue.Labels = append(issue.Labels, req.GetLabel())
+		}
+	}
+
 	return &pb.AddLabelResponse{}, nil
 }
 
 func (c *TestClient) CreateIssue(ctx context.Context, req *pb.CreateIssueRequest) (*pb.CreateIssueResponse, error) {
 	c.counter++
-	c.issues = append(c.issues, &pb.GithubIssue{Id: c.counter, Title: req.GetTitle(), Repo: req.GetRepo()})
+	c.issues = append(c.issues, &pb.GithubIssue{Id: c.counter, Title: req.GetTitle(), Repo: req.GetRepo(), State: pb.IssueState_ISSUE_STATE_OPEN})
 	return &pb.CreateIssueResponse{IssueId: c.counter}, nil
 }
 
@@ -84,10 +91,6 @@ func (c *TestClient) GetIssues(ctx context.Context, req *pb.GetIssuesRequest) (*
 
 func (c *TestClient) GetComments(ctx context.Context, req *pb.GetCommentsRequest) (*pb.GetCommentsResponse, error) {
 	return &pb.GetCommentsResponse{Comments: c.comments[fmt.Sprintf("%v-%v-%v", req.GetUser(), req.GetRepo(), req.GetId())]}, nil
-}
-
-func (c *TestClient) GetProjects(ctx context.Context, req *pb.GetProjectsRequest) (*pb.GetProjectsResponse, error) {
-	return &pb.GetProjectsResponse{}, nil
 }
 
 func (c *TestClient) GetReleases(ctx context.Context, req *pb.GetReleasesRequest) (*pb.GetReleasesResponse, error) {
